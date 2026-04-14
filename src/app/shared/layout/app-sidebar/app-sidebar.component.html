@@ -59,7 +59,7 @@
             }"
           >
             @if ((isExpanded$ | async) || (isHovered$ | async) || (isMobileOpen$ | async)) 
-            { Menu } 
+            { เมนูการใช้งาน } 
            @else {
             <svg
               width="1em"
@@ -248,7 +248,7 @@
 
         <!-- Others Section -->
         <div>
-          <h2
+          <!-- <h2
             class="mb-4 text-xs uppercase flex leading-[20px] text-gray-400"
             [ngClass]="{
               'xl:justify-center': !(
@@ -280,7 +280,7 @@
                 ></path>
               </svg>
             }
-          </h2>
+          </h2> -->
 
           <ul class="flex flex-col gap-1">
             @for (nav of othersItems; track $index;let i = $index) {
@@ -450,8 +450,8 @@
         <!-- end other section -->
       </div>
     </nav>
-    @if ((isExpanded$ | async) || (isHovered$ | async) || (isMobileOpen$ | async)) {
+    <!-- @if ((isExpanded$ | async) || (isHovered$ | async) || (isMobileOpen$ | async)) {
     <app-sidebar-widget />
-    }
+    } -->
   </div>
 </aside>

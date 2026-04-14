@@ -3,9 +3,9 @@
 <div class="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
   <div class="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
     <div class="flex flex-col items-center w-full gap-6 xl:flex-row">
-      <div class="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
+      <!-- <div class="w-20 h-20 overflow-hidden border border-gray-200 rounded-full dark:border-gray-800">
         <img [src]="user.avatar" alt="user" />
-      </div>
+      </div> -->
       <div class="order-3 xl:order-2">
         <h4 class="mb-2 text-lg font-semibold text-center text-gray-800 dark:text-white/90 xl:text-left">
           {{ user.firstName }} {{ user.lastName }}
@@ -126,7 +126,7 @@
           fill=""
         />
       </svg>
-      Edit
+      แก้ไข
     </button>
   </div>
 </div>
@@ -140,7 +140,7 @@
   <div class="no-scrollbar relative w-full max-w-[700px] overflow-y-auto rounded-3xl bg-white p-4 dark:bg-gray-900 lg:p-11">
     <div class="px-2 pr-14">
       <h4 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white/90">
-        Edit Personal Information
+        แก้ไขข้อมูลส่วนตัว
       </h4>
       <p class="mb-6 text-sm text-gray-500 dark:text-gray-400 lg:mb-7">
         Update your details to keep your profile up-to-date.
@@ -177,21 +177,21 @@
           </h5>
           <div class="grid grid-cols-1 gap-x-6 gap-y-5 lg:grid-cols-2">
             <div class="col-span-2 lg:col-span-1">
-              <label>First Name</label>
+              <label>ชื่อจริง</label>
               <app-input-field type="text" [value]="user.firstName" />
             </div>
             <div class="col-span-2 lg:col-span-1">
-              <label>Last Name</label>
+              <label>นามสกุล</label>
               <app-input-field type="text" [value]="user.lastName" />
             </div>
             <div class="col-span-2 lg:col-span-1">
               <label>Email Address</label>
               <app-input-field type="text" [value]="user.email" />
             </div>
-            <div class="col-span-2 lg:col-span-1">
+            <!-- <div class="col-span-2 lg:col-span-1">
               <label>Phone</label>
               <app-input-field type="text" [value]="user.phone" />
-            </div>
+            </div> -->
             <div class="col-span-2">
               <label>Bio</label>
               <app-input-field type="text" [value]="user.bio" />
