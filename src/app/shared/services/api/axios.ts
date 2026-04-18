@@ -5,7 +5,7 @@ import axios, {
 } from "axios";
 
 import { environment } from "../../../environments/environment";
-import { getAppInjector } from "../../injectors/app.injector";
+import { getAppInjector } from "../injectors/app.injector";
 import { TokenStorageService } from "./common/token-storage-service";
 
 export default (): AxiosInstance => {
@@ -54,7 +54,7 @@ export default (): AxiosInstance => {
 
       if (status === 401 || status === 403) {
         tokenStorage.clearToken();
-        window.location.href = "/auth/sign-in";
+        window.location.href = "/signin";
       }
 
       return Promise.reject(error);
