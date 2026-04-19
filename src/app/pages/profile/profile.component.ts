@@ -9,9 +9,9 @@ import { UserAddressCardComponent } from '../../shared/components/user-profile/u
   selector: 'app-profile',
   imports: [
     PageBreadcrumbComponent,
-    UserMetaCardComponent,
+    // UserMetaCardComponent,
     UserInfoCardComponent,
-    UserAddressCardComponent
+    // UserAddressCardComponent
 ],
   templateUrl: './profile.component.html',
   styles: ``
