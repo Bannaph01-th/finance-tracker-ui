@@ -5,9 +5,9 @@ export interface SignInPayload {
 
 export interface AuthResponse {
     status: number;
-    resultData:[{
+    resultData:{
         accessToken: string;
-    }];
+    };
     message: string;
     console: string;
     statusCode: number;

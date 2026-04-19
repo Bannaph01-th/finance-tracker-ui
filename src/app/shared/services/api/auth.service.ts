@@ -22,7 +22,7 @@ export class AuthService {
 
             const result = response.data;
 
-            const token = result?.resultData?.[0]?.accessToken;
+            const token = result?.resultData?.accessToken;
 
             if(token){
                 console.log("Access token stored successfully.", token);

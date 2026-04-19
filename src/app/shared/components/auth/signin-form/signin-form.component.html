@@ -37,16 +37,30 @@
     </div>
 
     <!-- Form -->
-    <form (ngSubmit)="onSubmit()" [formGroup]="signInForm" class="space-y-6">
+    <form [formGroup]="signInForm" class="space-y-6">
       <div>
         <app-label>Email <span class="text-error-500">*</span></app-label>
-        <input type="email" formControlName="email">
+        <app-input-field
+          type="email"
+          placeholder="info@gmail.com"
+          formControlName="email"
+          name="email"
+          class="form-input"
+          required
+        />
       </div>
 
       <div>
         <app-label>Password <span class="text-error-500">*</span></app-label>
         <div class="relative">
-          <input type="password" formControlName="password">
+          <app-input-field
+            [type]="showPassword ? 'text' : 'password'"
+            placeholder="Enter your password"
+            formControlName="password"
+            name="password"
+            class="form-input"
+            required
+          />
           <span
             (click)="togglePasswordVisibility()"
             class="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
@@ -86,9 +100,10 @@
         </div>
       </div>
 
-      <button type="submit">
-  Sign In
-</button>
+      <app-button (click)="onSubmit()" className="w-full" size="sm">
+        Sign in
+      </app-button>
     </form>
   </div>
 </div>
+
