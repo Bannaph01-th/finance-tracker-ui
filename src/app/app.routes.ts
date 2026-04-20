@@ -24,6 +24,7 @@ import { SummaryTableComponent } from "./pages/summary-table/summary-table.compo
 import { FinanceCalenderComponent } from "./pages/finance-calender/finance-calender.component";
 import { UserManagementComponent } from "./pages/admin/user-management/user-management.component";
 import { AdminDashboardComponent } from "./pages/admin/admin-dashboard/admin-dashboard.component";
+import { HomePageComponent } from "./pages/home-page/home-page.component";
 
 export const routes: Routes = [
   {
@@ -32,7 +33,7 @@ export const routes: Routes = [
     children: [
       {
         path: "home-page",
-        component: EcommerceComponent,
+        component: HomePageComponent,
         pathMatch: "full",
         title: "Finance Tracker Home Page",
         canActivate: [authGuard],

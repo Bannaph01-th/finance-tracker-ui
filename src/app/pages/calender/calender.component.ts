@@ -84,7 +84,7 @@ export class CalenderComponent {
       eventClick: (info) => this.handleEventClick(info),
       customButtons: {
         addEventButton: {
-          text: 'เพิ่มประวัติรายรับรายจ่าย +',
+          text: 'Add Event +',
           click: () => this.openModal()
         }
       },

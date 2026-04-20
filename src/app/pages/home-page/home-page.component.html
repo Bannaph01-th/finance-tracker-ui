@@ -1,0 +1,171 @@
+<div class="p-4 md:p-6">
+
+  <div class="grid grid-cols-1 gap-6 xl:grid-cols-12">
+
+    <!-- LEFT -->
+    <div class="space-y-6 xl:col-span-5">
+
+      <!-- Wallet Card -->
+      <div
+        class="rounded-3xl bg-gradient-to-br from-brand-500 to-brand-600 p-6 text-white shadow-xl"
+      >
+        <div class="flex items-center justify-between">
+          <div class="text-sm opacity-80">Finance Tracker</div>
+
+          <!-- Frog -->
+          <div class="relative inline-block group">
+            <div class="cursor-pointer text-7xl leading-none">🐸</div>
+
+            <div
+              class="absolute left-1/2 top-full z-20 mt-3 hidden w-40 -translate-x-1/2 rounded-xl bg-white px-3 py-2 text-sm text-black shadow-xl group-hover:block dark:bg-gray-800 dark:text-white"
+            >
+              กบผู้ช่วยจัดการเงินของคุณ
+
+              <div
+                class="absolute left-1/2 top-0 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white dark:bg-gray-800"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-6 text-sm opacity-80">ยอดคงเหลือ</div>
+
+        <div class="mt-2 text-5xl font-bold">
+          ฿ 8,849.74
+        </div>
+
+        <div class="mt-6 h-3 rounded-full bg-white/20">
+          <div class="h-3 w-[40%] rounded-full bg-emerald-300"></div>
+        </div>
+
+        <div class="mt-2 text-sm opacity-80">
+          ใช้ไป 40% จากวงเงิน 50,000
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-2 gap-4">
+
+        <!-- Income -->
+        <div
+          class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900"
+        >
+          <div class="text-sm text-gray-500 dark:text-gray-400">
+            รายรับเดือนนี้
+          </div>
+
+          <div class="mt-2 text-2xl font-bold text-green-600 dark:text-green-400">
+            ฿ 14,500
+          </div>
+        </div>
+
+        <!-- Expense -->
+        <div
+          class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900"
+        >
+          <div class="text-sm text-gray-500 dark:text-gray-400">
+            รายจ่ายเดือนนี้
+          </div>
+
+          <div class="mt-2 text-2xl font-bold text-red-500 dark:text-red-400">
+            ฿ 9,220
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Add -->
+      <div
+        class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900"
+      >
+        <div class="mb-4 text-lg font-semibold text-gray-800 dark:text-white">
+          เพิ่มรายการด่วน
+        </div>
+
+        <button
+          class="w-full rounded-xl bg-brand-500 py-3 font-medium text-white transition hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+        >
+          + เพิ่มรายรับ / รายจ่าย
+        </button>
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div class="space-y-6 xl:col-span-7">
+
+      <!-- Chart -->
+      <div
+        class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900"
+      >
+        <div class="mb-4 text-lg font-semibold text-gray-800 dark:text-white">
+          สรุปรายจ่ายตามหมวดหมู่
+        </div>
+
+        <app-monthly-sales-chart></app-monthly-sales-chart>
+      </div>
+
+      <!-- Recent Transactions -->
+      <div
+        class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900"
+      >
+        <div class="mb-4 flex items-center justify-between">
+          <div class="text-lg font-semibold text-gray-800 dark:text-white">
+            รายการล่าสุด
+          </div>
+
+          <button
+            class="text-sm font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-200"
+          >
+            ดูทั้งหมด
+          </button>
+        </div>
+
+        <div class="space-y-3">
+
+          <!-- item -->
+          <div
+            class="flex items-center justify-between rounded-xl bg-gray-50 px-4 py-3 dark:bg-gray-800"
+          >
+            <div>
+              <div class="font-medium text-gray-800 dark:text-white">
+                ซื้อกาแฟ
+              </div>
+
+              <div class="text-sm text-gray-500 dark:text-gray-400">
+                วันนี้ 09:30
+              </div>
+            </div>
+
+            <div class="font-semibold text-red-500 dark:text-red-400">
+              -฿120
+            </div>
+          </div>
+
+          <!-- item -->
+          <div
+            class="flex items-center justify-between rounded-xl bg-gray-50 px-4 py-3 dark:bg-gray-800"
+          >
+            <div>
+              <div class="font-medium text-gray-800 dark:text-white">
+                เงินเดือน
+              </div>
+
+              <div class="text-sm text-gray-500 dark:text-gray-400">
+                1 เม.ย.
+              </div>
+            </div>
+
+            <div class="font-semibold text-green-600 dark:text-green-400">
+              +฿12,000
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

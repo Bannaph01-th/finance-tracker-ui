@@ -7,166 +7,183 @@
     </div>
   </div>
 
-  <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] m-4">
+  <div
+    class="m-4 overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]"
+  >
     <div class="max-w-full overflow-x-auto">
       <table class="min-w-full border-collapse">
+
         <!-- HEADER -->
         <thead>
           <tr class="border-b border-gray-200 dark:border-white/[0.05]">
+
             <th
               rowspan="2"
-              class="min-w-[140px] border-r px-4 py-3 text-center text-md font-semibold"
+              class="min-w-[140px] border-r border-gray-200 px-4 py-3 text-center text-md font-semibold text-gray-800 dark:border-white/[0.05] dark:text-white"
             >
               วัน/เดือน/ปี
             </th>
 
             <th
               rowspan="2"
-              class="min-w-[220px] border-r px-4 py-3 text-center text-md font-semibold"
+              class="min-w-[220px] border-r border-gray-200 px-4 py-3 text-center text-md font-semibold text-gray-800 dark:border-white/[0.05] dark:text-white"
             >
               รายการ
             </th>
 
-            <!-- Income Dynamic -->
+            <!-- income -->
             <th
               [attr.colspan]="incomeCategories.length"
-              class="border-r px-4 py-3 text-center text-md font-semibold"
+              class="border-r border-gray-200 px-4 py-3 text-center text-md font-semibold text-gray-800 dark:border-white/[0.05] dark:text-white"
             >
               รายรับ (บาท)
             </th>
 
-            <!-- Expense Dynamic -->
+            <!-- expense -->
             <th
               [attr.colspan]="expenseCategories.length"
-              class="border-r px-4 py-3 text-center text-md font-semibold"
+              class="border-r border-gray-200 px-4 py-3 text-center text-md font-semibold text-gray-800 dark:border-white/[0.05] dark:text-white"
             >
               รายจ่าย (บาท)
             </th>
 
             <th
               rowspan="2"
-              class="min-w-[180px] px-4 py-3 text-center text-md font-semibold"
+              class="min-w-[180px] px-4 py-3 text-center text-md font-semibold text-gray-800 dark:text-white"
             >
               หมายเหตุ
             </th>
           </tr>
 
+          <!-- sub header -->
           <tr class="border-b border-gray-200 dark:border-white/[0.05]">
-            <!-- income sub header -->
+
             @for (cat of incomeCategories; track cat) {
-            <th class="border-r px-4 py-3 text-center text-md font-medium">
+            <th
+              class="border-r border-gray-200 px-4 py-3 text-center text-md font-medium text-gray-700 dark:border-white/[0.05] dark:text-gray-300"
+            >
               {{ cat }}
             </th>
             }
 
-            <!-- expense sub header -->
             @for (cat of expenseCategories; track cat) {
-            <th class="border-r px-4 py-3 text-center text-md font-medium">
+            <th
+              class="border-r border-gray-200 px-4 py-3 text-center text-md font-medium text-gray-700 dark:border-white/[0.05] dark:text-gray-300"
+            >
               {{ cat }}
             </th>
             }
+
           </tr>
         </thead>
 
         <!-- BODY -->
         <tbody>
+
           @for (row of groupedRows; track row.date; let i = $index) {
           <tr
             class="border-b border-gray-200 dark:border-white/[0.05]"
-            [ngClass]="i % 2 === 0 
-              ? 'bg-white dark:bg-transparent' 
+            [ngClass]="i % 2 === 0
+              ? 'bg-white dark:bg-transparent'
               : 'bg-gray-50 dark:bg-white/[0.02]'"
           >
+
             <!-- date -->
-            <td class="border-r px-4 py-3 align-top font-medium whitespace-nowrap">
+            <td
+              class="border-r border-gray-200 px-4 py-3 align-top font-medium whitespace-nowrap text-gray-800 dark:border-white/[0.05] dark:text-white"
+            >
               {{ row.date }}
             </td>
 
-            <!-- item names -->
-            <!-- <td class="border-r px-4 py-3 align-top">
-              <div class="space-y-1">
+            <!-- items -->
+            <td
+              class="border-r border-gray-200 px-6 py-4 align-top text-gray-700 dark:border-white/[0.05] dark:text-gray-300"
+            >
+              <ul class="list-disc space-y-2 pl-5 marker:text-gray-400 dark:marker:text-gray-500">
                 @for (item of row.items; track $index) {
-                <div>{{ item }}</div>
-                }
-              </div>
-            </td> -->
-            <td class="border-r px-6 py-4 align-top">
-              <ul class="list-disc space-y-2 pl-5">
-                @for (item of row.items; track $index) {
-                  <li class="leading-relaxed">
-                    {{ item }}
-                  </li>
+                <li class="leading-relaxed">
+                  {{ item }}
+                </li>
                 }
               </ul>
             </td>
 
-            <!-- income columns -->
+            <!-- income -->
             @for (cat of incomeCategories; track cat) {
-            <td class="border-r px-4 py-3 align-top text-center">
+            <td
+              class="border-r border-gray-200 px-4 py-3 text-center align-top text-gray-800 dark:border-white/[0.05] dark:text-white"
+            >
               <div class="space-y-1">
                 @for (amount of row.incomeMap[cat] || []; track $index) {
-                  <!-- <div>{{ amount | number:'1.2-2' }} บาท</div> -->
-                  <div>{{ amount | number:'1.2-2' }}</div>
+                <div>{{ amount | number:'1.2-2' }}</div>
                 }
               </div>
             </td>
             }
 
-            <!-- expense columns -->
+            <!-- expense -->
             @for (cat of expenseCategories; track cat) {
-            <td class="border-r px-4 py-3 align-top text-center">
+            <td
+              class="border-r border-gray-200 px-4 py-3 text-center align-top text-gray-800 dark:border-white/[0.05] dark:text-white"
+            >
               <div class="space-y-1">
                 @for (amount of row.expenseMap[cat] || []; track $index) {
-                  <!-- <div>{{ amount | number:'1.2-2' }} บาท</div> -->
-                  <div>{{ amount | number:'1.2-2' }}</div>
+                <div>{{ amount | number:'1.2-2' }}</div>
                 }
               </div>
             </td>
             }
 
-            <!-- note -->
-            <td class="px-6 py-4 align-top">
-              <ul class="list-disc space-y-2 pl-5">
+            <!-- notes -->
+            <td class="px-6 py-4 align-top text-gray-700 dark:text-gray-300">
+              <ul class="list-disc space-y-2 pl-5 marker:text-gray-400 dark:marker:text-gray-500">
                 @for (note of row.notes; track $index) {
-                  <li class="leading-relaxed">
-                    {{ note || '-' }}
-                  </li>
+                <li class="leading-relaxed">
+                  {{ note || '-' }}
+                </li>
                 }
               </ul>
             </td>
+
           </tr>
           }
 
           <!-- TOTAL -->
           <tr class="bg-gray-100 font-semibold dark:bg-white/[0.02]">
 
-            <td colspan="2" class="border-r px-4 py-3 text-green-600">
+            <td
+              colspan="2"
+              class="border-r border-gray-200 px-4 py-3 text-green-600 dark:border-white/[0.05] dark:text-green-400"
+            >
               รวม
             </td>
 
-            <!-- income -->
+            <!-- income total -->
             @for (cat of incomeCategories; track cat) {
-            <td class="border-r px-4 py-3 text-center text-green-600">
+            <td
+              class="border-r border-gray-200 px-4 py-3 text-center text-green-600 dark:border-white/[0.05] dark:text-green-400"
+            >
               {{ getTotalIncome(cat) | number:'1.2-2' }} บาท
             </td>
             }
 
-            <!-- expense -->
+            <!-- expense total -->
             @for (cat of expenseCategories; track cat) {
-            <td class="border-r px-4 py-3 text-center text-red-500">
+            <td
+              class="border-r border-gray-200 px-4 py-3 text-center text-red-500 dark:border-white/[0.05] dark:text-red-400"
+            >
               {{ getTotalExpense(cat) | number:'1.2-2' }} บาท
             </td>
             }
 
-            <!-- note -->
             <td class="px-4 py-3"></td>
 
           </tr>
+
         </tbody>
       </table>
     </div>
   </div>
-
   <!-- Pagination Controls -->
   <div class="px-6 py-4 border-t border-gray-200 dark:border-white/[0.05]">
     <div class="flex items-center justify-between">
