@@ -16,17 +16,17 @@ interface CalendarEvent extends EventInput {
 }
 
 @Component({
-  selector: 'app-calender',
+  selector: 'app-finance-calender',
   imports: [
     FormsModule,
     KeyValuePipe,
     FullCalendarModule,
     ModalComponent
   ],
-  templateUrl: './calender.component.html',
+  templateUrl: './finance-calender.component.html',
   styles: ``
 })
-export class CalenderComponent {
+export class FinanceCalenderComponent {
 
   @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
 

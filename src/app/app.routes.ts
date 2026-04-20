@@ -19,6 +19,11 @@ import { SignInComponent } from "./pages/auth-pages/sign-in/sign-in.component";
 import { SignUpComponent } from "./pages/auth-pages/sign-up/sign-up.component";
 import { CalenderComponent } from "./pages/calender/calender.component";
 import { authGuard } from "./shared/services/guards/guards";
+import { Layout } from "@amcharts/amcharts5";
+import { SummaryTableComponent } from "./pages/summary-table/summary-table.component";
+import { FinanceCalenderComponent } from "./pages/finance-calender/finance-calender.component";
+import { UserManagementComponent } from "./pages/admin/user-management/user-management.component";
+import { AdminDashboardComponent } from "./pages/admin/admin-dashboard/admin-dashboard.component";
 
 export const routes: Routes = [
   {
@@ -26,24 +31,55 @@ export const routes: Routes = [
     component: AppLayoutComponent,
     children: [
       {
-        path: "",
+        path: "home-page",
         component: EcommerceComponent,
         pathMatch: "full",
-        title: "Angular Ecommerce Dashboard",
+        title: "Finance Tracker Home Page",
+        canActivate: [authGuard],
+      },
+      {
+        path: "summary",
+        component: SummaryTableComponent,
+        title: "Finance Tracker Summary Page",
         canActivate: [authGuard],
       },
       {
         path: "calendar",
-        component: CalenderComponent,
-        title: "Angular Calender",
+        component: FinanceCalenderComponent,
+        title: "Finance Tracker Calender Page",
         canActivate: [authGuard],
       },
       {
         path: "profile",
         component: ProfileComponent,
-        title: "Angular Profile Dashboard",
+        title: "Finance Tracker User Profile Page",
         canActivate: [authGuard],
       },
+      {
+        path: "admin",
+        title: "Finance Tracker Admin Manager",
+        children: [
+          {
+            path: "dashboard",
+            component: AdminDashboardComponent,
+            pathMatch: "full",
+            canActivate: [authGuard],
+          },
+          {
+            path: "users",
+            component: UserManagementComponent,
+            canActivate: [authGuard],
+          },
+          {
+            path: "**",
+            redirectTo: "/homePage"
+          },
+        ]
+      },
+
+      // template path
+      // ==================
+
       {
         path: "form-elements",
         component: FormElementsComponent,
@@ -119,27 +155,29 @@ export const routes: Routes = [
       },
     ],
   },
+
   // auth pages
   {
-    path: "signin",
+    path: "sign-in",
     component: SignInComponent,
     canActivate: [authGuard],
     title:
-      "Angular Sign In Dashboard | TailAdmin - Angular Admin Dashboard Template",
+      "Finance Tracker Sign In Page",
   },
-  {
-    path: "signup",
-    component: SignUpComponent,
-    canActivate: [authGuard],
-    title:
-      "Angular Sign Up Dashboard | TailAdmin - Angular Admin Dashboard Template",
-  },
+  // {
+  //   path: "signup",
+  //   component: SignUpComponent,
+  //   canActivate: [authGuard],
+  //   title:
+  //     "Finance Tracker Sign Up Page",
+  // },
+
   // error pages
   {
     path: "**",
     component: NotFoundComponent,
     canActivate: [authGuard],
     title:
-      "Angular NotFound Dashboard | TailAdmin - Angular Admin Dashboard Template",
+      "Finance Tracker NotFound",
   },
 ];

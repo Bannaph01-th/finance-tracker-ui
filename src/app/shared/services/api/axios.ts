@@ -54,7 +54,7 @@ export default (): AxiosInstance => {
 
       if (status === 401 || status === 403) {
         tokenStorage.clearToken();
-        window.location.href = "/signin";
+        window.location.href = "/sign-in";
       }
 
       return Promise.reject(error);

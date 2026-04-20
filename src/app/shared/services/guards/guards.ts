@@ -13,14 +13,14 @@ export const authGuard: CanActivateFn = (route, state): boolean | UrlTree => {
 
   const isLoggedIn: boolean = tokenStorage.hasSession();
   const inAuthPath: boolean =
-    state.url.startsWith("/signin")
+    state.url.startsWith("/sign-in")
   // not signed in will redirect to sign-in
   if (!isLoggedIn && !inAuthPath) {
-    return router.createUrlTree(["/signin"]);
+    return router.createUrlTree(["/sign-in"]);
   }
 
   if (isLoggedIn && inAuthPath) {
-    return router.createUrlTree(["/"]);
+    return router.createUrlTree(["/home-page"]);
   }
 
   return true;
