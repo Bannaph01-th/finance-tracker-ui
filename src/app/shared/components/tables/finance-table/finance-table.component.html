@@ -7,100 +7,161 @@
     </div>
   </div>
 
-  <div class="overflow-hidden">
-    <div class="max-w-full px-5 overflow-x-auto sm:px-6">
-      <table class="min-w-full">
-        <thead class="border-gray-100 border-y dark:border-white/[0.05]">
-          <tr >
-            <th rowspan="2" class="py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">วัน / เดือน / ปี</th>
-            <th rowspan="2" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">รายการ</th>
-            <th rowspan="2" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">รายรับ (บาท)</th>
-            <th class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">รายจ่าย (บาท)</th>
-            <th rowspan="2" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">หมายเหตุ</th>
-            <th rowspan="2" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">
-              <span class="sr-only">Action</span>
+  <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03] m-4">
+    <div class="max-w-full overflow-x-auto">
+      <table class="min-w-full border-collapse">
+        <!-- HEADER -->
+        <thead>
+          <tr class="border-b border-gray-200 dark:border-white/[0.05]">
+            <th
+              rowspan="2"
+              class="min-w-[140px] border-r px-4 py-3 text-center text-md font-semibold"
+            >
+              วัน/เดือน/ปี
+            </th>
+
+            <th
+              rowspan="2"
+              class="min-w-[220px] border-r px-4 py-3 text-center text-md font-semibold"
+            >
+              รายการ
+            </th>
+
+            <!-- Income Dynamic -->
+            <th
+              [attr.colspan]="incomeCategories.length"
+              class="border-r px-4 py-3 text-center text-md font-semibold"
+            >
+              รายรับ (บาท)
+            </th>
+
+            <!-- Expense Dynamic -->
+            <th
+              [attr.colspan]="expenseCategories.length"
+              class="border-r px-4 py-3 text-center text-md font-semibold"
+            >
+              รายจ่าย (บาท)
+            </th>
+
+            <th
+              rowspan="2"
+              class="min-w-[180px] px-4 py-3 text-center text-md font-semibold"
+            >
+              หมายเหตุ
             </th>
           </tr>
-          <tr>
-            <th></th>
-            <th></th>
-            <th>a</th>
-            <th></th>
-            <th></th>
-            <th></th>
+
+          <tr class="border-b border-gray-200 dark:border-white/[0.05]">
+            <!-- income sub header -->
+            @for (cat of incomeCategories; track cat) {
+            <th class="border-r px-4 py-3 text-center text-md font-medium">
+              {{ cat }}
+            </th>
+            }
+
+            <!-- expense sub header -->
+            @for (cat of expenseCategories; track cat) {
+            <th class="border-r px-4 py-3 text-center text-md font-medium">
+              {{ cat }}
+            </th>
+            }
           </tr>
         </thead>
-        <tbody class="divide-y divide-gray-100 dark:divide-white/[0.05]">
-          @for (item of currentItems; track $index) {
-          <tr>
-            <td class="px-4 py-4">
-              <div class="flex items-center gap-3">
-                <div class="w-8 h-8">
-                  <img width="32" height="32" [src]="item.image" class="size-8" alt="brand" />
-                </div>
-                <div>
-                  <span class="block font-medium text-gray-700 text-theme-sm dark:text-gray-400">
-                    {{ item.action }}
-                  </span>
-                </div>
+
+        <!-- BODY -->
+        <tbody>
+          @for (row of groupedRows; track row.date; let i = $index) {
+          <tr
+            class="border-b border-gray-200 dark:border-white/[0.05]"
+            [ngClass]="i % 2 === 0 
+              ? 'bg-white dark:bg-transparent' 
+              : 'bg-gray-50 dark:bg-white/[0.02]'"
+          >
+            <!-- date -->
+            <td class="border-r px-4 py-3 align-top font-medium whitespace-nowrap">
+              {{ row.date }}
+            </td>
+
+            <!-- item names -->
+            <!-- <td class="border-r px-4 py-3 align-top">
+              <div class="space-y-1">
+                @for (item of row.items; track $index) {
+                <div>{{ item }}</div>
+                }
+              </div>
+            </td> -->
+            <td class="border-r px-6 py-4 align-top">
+              <ul class="list-disc space-y-2 pl-5">
+                @for (item of row.items; track $index) {
+                  <li class="leading-relaxed">
+                    {{ item }}
+                  </li>
+                }
+              </ul>
+            </td>
+
+            <!-- income columns -->
+            @for (cat of incomeCategories; track cat) {
+            <td class="border-r px-4 py-3 align-top text-center">
+              <div class="space-y-1">
+                @for (amount of row.incomeMap[cat] || []; track $index) {
+                  <!-- <div>{{ amount | number:'1.2-2' }} บาท</div> -->
+                  <div>{{ amount | number:'1.2-2' }}</div>
+                }
               </div>
             </td>
-            <td class="px-4 py-4 text-gray-700 whitespace-nowrap text-theme-sm dark:text-gray-400">
-              {{ item.date }}
-            </td>
-            <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
-              {{ item.amount }}
-            </td>
-            <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
-              {{ item.category }}
-            </td>
-            <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
-              <app-badge
-                size="sm"
-                [color]="getBadgeColor(item.status)"
-              >
-                {{ item.status }}
-              </app-badge>
-            </td>
-            <td class="px-4 py-4 text-gray-700 text-theme-sm dark:text-gray-400">
-              <div class="relative inline-block">
-                <app-table-dropdown>
-                  <div dropdown-button>
-                    <button class="text-gray-500 dark:text-gray-400">
-                      <svg
-                        class="fill-current"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          clip-rule="evenodd"
-                          d="M5.99902 10.245C6.96552 10.245 7.74902 11.0285 7.74902 11.995V12.005C7.74902 12.9715 6.96552 13.755 5.99902 13.755C5.03253 13.755 4.24902 12.9715 4.24902 12.005V11.995C4.24902 11.0285 5.03253 10.245 5.99902 10.245ZM17.999 10.245C18.9655 10.245 19.749 11.0285 19.749 11.995V12.005C19.749 12.9715 18.9655 13.755 17.999 13.755C17.0325 13.755 16.249 12.9715 16.249 12.005V11.995C16.249 11.0285 17.0325 10.245 17.999 10.245ZM13.749 11.995C13.749 11.0285 12.9655 10.245 11.999 10.245C11.0325 10.245 10.249 11.0285 10.249 11.995V12.005C10.249 12.9715 11.0325 13.755 11.999 13.755C12.9655 13.755 13.749 12.9715 13.749 12.005V11.995Z"
-                          fill=""
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div dropdown-content>
-                    <button
-                      class="text-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                    >
-                      View More
-                    </button>
-                    <button
-                      class="text-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </app-table-dropdown>
+            }
+
+            <!-- expense columns -->
+            @for (cat of expenseCategories; track cat) {
+            <td class="border-r px-4 py-3 align-top text-center">
+              <div class="space-y-1">
+                @for (amount of row.expenseMap[cat] || []; track $index) {
+                  <!-- <div>{{ amount | number:'1.2-2' }} บาท</div> -->
+                  <div>{{ amount | number:'1.2-2' }}</div>
+                }
               </div>
+            </td>
+            }
+
+            <!-- note -->
+            <td class="px-6 py-4 align-top">
+              <ul class="list-disc space-y-2 pl-5">
+                @for (note of row.notes; track $index) {
+                  <li class="leading-relaxed">
+                    {{ note || '-' }}
+                  </li>
+                }
+              </ul>
             </td>
           </tr>
           }
+
+          <!-- TOTAL -->
+          <tr class="bg-gray-100 font-semibold dark:bg-white/[0.02]">
+
+            <td colspan="2" class="border-r px-4 py-3 text-green-600">
+              รวม
+            </td>
+
+            <!-- income -->
+            @for (cat of incomeCategories; track cat) {
+            <td class="border-r px-4 py-3 text-center text-green-600">
+              {{ getTotalIncome(cat) | number:'1.2-2' }} บาท
+            </td>
+            }
+
+            <!-- expense -->
+            @for (cat of expenseCategories; track cat) {
+            <td class="border-r px-4 py-3 text-center text-red-500">
+              {{ getTotalExpense(cat) | number:'1.2-2' }} บาท
+            </td>
+            }
+
+            <!-- note -->
+            <td class="px-4 py-3"></td>
+
+          </tr>
         </tbody>
       </table>
     </div>
@@ -120,7 +181,7 @@
         <span class="hidden sm:inline">Previous</span>
       </app-button>
       <!-- Page Info -->
-      <span class="block text-sm font-medium text-gray-700 dark:text-gray-400 sm:hidden">
+      <span class="block text-md font-medium text-gray-700 dark:text-gray-400 sm:hidden">
         Page {{ currentPage }} of {{ totalPages }}
       </span>
       <!-- Page Numbers -->

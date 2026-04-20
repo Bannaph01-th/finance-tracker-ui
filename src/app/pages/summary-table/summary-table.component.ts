@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ComponentCardComponent } from '../../shared/components/common/component-card/component-card.component';
+// import { ComponentCardComponent } from '../../shared/components/common/component-card/component-card.component';
 import { PageBreadcrumbComponent } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { FinanceTableComponent } from '../../shared/components/tables/finance-table/finance-table.component';
 import { LabelComponent } from '../../shared/components/form/label/label.component';
@@ -11,7 +11,7 @@ import { TimePickerComponent } from '../../shared/components/form/time-picker/ti
 @Component({
   selector: 'app-summary-table-page',
   imports: [
-    ComponentCardComponent,
+    // ComponentCardComponent,
     PageBreadcrumbComponent,
     FinanceTableComponent,
     LabelComponent,
