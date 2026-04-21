@@ -8,6 +8,11 @@ export interface Category {
   user_id: string;
 }
 
+export interface CategoryPayload {
+    name:string;
+    type_id: number;
+}
+
 export interface CategoryResponse {
   status: number;
   message?: string;

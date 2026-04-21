@@ -5,16 +5,13 @@ import { UserInfoCardComponent } from "../../shared/components/user-profile/user
 import { ModalComponent } from "../../shared/components/ui/modal/modal.component";
 import { TransactionService } from "../../shared/services/api/transactions.service";
 import { CategoryService } from "../../shared/services/api/category.service";
-import { Category } from "../../shared/services/interfaces/category.interface";
+import {
+  Category,
+  CategoryPayload,
+} from "../../shared/services/interfaces/category.interface";
+import { TransactionType } from "../../shared/services/interfaces/transaction.interface";
 
-type CategoryType = "income" | "expense";
 type ModalType = "category" | "delete";
-
-interface CategoryItem {
-  id: number;
-  name: string;
-  type: CategoryType;
-}
 
 @Component({
   selector: "app-profile",
@@ -33,20 +30,22 @@ export class ProfileComponent implements OnInit {
 
   categoryName = "";
   categories: Category[] = [];
+  categoryTypeId = 1;
 
   deleteMode = false;
-  deleteId: number | null = null;
+  deleteId: string | null = null;
+
+  transaction: TransactionType[] = [];
 
   constructor(
     private readonly _transactionType: TransactionService,
     private readonly _categoryService: CategoryService,
   ) {}
 
-
   get sortedCategories() {
     return [...this.categories].sort((a, b) => {
       if (a.type_name === b.type_name) {
-        return a.type_id - (b.type_id);
+        return a.type_id - b.type_id;
       }
 
       return a.type_name === "INCOME" ? -1 : 1;
@@ -54,16 +53,20 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.loadCategory()
+    this.loadTransactionTypes();
+    this.loadCategory();
   }
 
-  // async loadTransactionTypes() {
-  //   const res = await this._transactionType.getType();
+  async loadTransactionTypes() {
+    const res = await this._transactionType.getType();
 
-  //   if (res?.resultData?.transaction_types) {
-  //     this.transactionTypes = res.resultData.transaction_types;
-  //   }
-  // }
+    if (res?.resultData?.transaction_types) {
+    this.transaction = res.resultData.transaction_types.sort((a, b) => {
+      if (a.transaction_type_name === b.transaction_type_name) return 0;
+      return a.transaction_type_name === "INCOME" ? -1 : 1;
+    });
+  }
+}
 
   async loadCategory() {
     const res = await this._categoryService.getAllCategory();
@@ -75,7 +78,7 @@ export class ProfileComponent implements OnInit {
     this.deleteMode = !this.deleteMode;
   }
 
-  openModal(type: ModalType, id?: number) {
+  openModal(type: ModalType, id?: string) {
     this.modalType = type;
     this.isOpen = true;
 
@@ -89,26 +92,43 @@ export class ProfileComponent implements OnInit {
     this.deleteId = null;
   }
 
-  // addCategory() {
-  //   if (!this.categoryName.trim()) return;
+  async addCategory() {
+    if (!this.categoryName.trim()) return;
 
-  //   this.categories.unshift({
-  //     id: Date.now(),
-  //     name: this.categoryName,
-  //     type: this.categoryType,
-  //   });
+    const payload: CategoryPayload = {
+      name: this.categoryName.trim(),
+      type_id: this.categoryTypeId,
+    };
 
-  //   this.categoryName = "";
-  //   this.categoryType = "expense";
+    const res = await this._categoryService.create(payload);
 
-  //   this.closeModal();
-  // }
+    if (res?.status === 200) {
+      this.categoryName = "";
+      this.closeModal();
+    }
 
-  // confirmDelete() {
-  //   this.categories = this.categories.filter(
-  //     (item) => item.id !== this.deleteId,
-  //   );
+    this.loadCategory();
+  }
 
-  //   this.closeModal();
-  // }
+  async confirmDelete() {
+    const id = this.deleteId;
+
+    if (id === null) return;
+
+    try {
+      const res = await this._categoryService.delete(id);
+      if (!res?.status) {
+        console.log("delete failed");
+        return;
+      }
+    } catch (e: any) {
+      console.log(e);
+    }
+    this.categories = this.categories.filter(
+      (item) => item.category_id !== this.deleteId,
+    );
+
+    this.deleteMode = !this.deleteMode;
+    this.closeModal();
+  }
 }

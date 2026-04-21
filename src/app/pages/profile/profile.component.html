@@ -1,18 +1,18 @@
 <app-page-breadcrumb pageTitle="หน้าโปรไฟล์" />
 
-<div class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] p-5 lg:p-6">
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] p-5 lg:p-6"
+>
   <app-user-info-card />
 </div>
 
-<div class="mt-3 rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] p-5 lg:p-6 dark:">
-
+<div
+  class="mt-3 rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] p-5 lg:p-6 dark:"
+>
   <div class="flex items-center justify-between gap-3">
-    <h4 class="text-lg font-semibold text-gray-800">
-      หมวดหมู่รายรับรายจ่าย
-    </h4>
+    <h4 class="text-lg font-semibold text-gray-800">หมวดหมู่รายรับรายจ่าย</h4>
 
     <div class="flex items-center gap-2">
-
       <button
         class="flex h-10 w-10 items-center justify-center rounded-full bg-red-500 text-white transition hover:bg-red-600"
         (click)="toggleDeleteMode()"
@@ -24,11 +24,34 @@
           viewBox="0 0 24 24"
           fill="none"
         >
-          <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-          <path d="M6 7L7 19C7.05 19.84 7.73 20.5 8.58 20.5H15.42C16.26 20.5 16.95 19.84 17 19L18 7" stroke="currentColor" stroke-width="2"/>
-          <path d="M9 7V4.5C9 3.94 9.44 3.5 10 3.5H14C14.55 3.5 15 3.94 15 4.5V7" stroke="currentColor" stroke-width="2"/>
+          <path
+            d="M10 11V17"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <path
+            d="M14 11V17"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <path
+            d="M4 7H20"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          />
+          <path
+            d="M6 7L7 19C7.05 19.84 7.73 20.5 8.58 20.5H15.42C16.26 20.5 16.95 19.84 17 19L18 7"
+            stroke="currentColor"
+            stroke-width="2"
+          />
+          <path
+            d="M9 7V4.5C9 3.94 9.44 3.5 10 3.5H14C14.55 3.5 15 3.94 15 4.5V7"
+            stroke="currentColor"
+            stroke-width="2"
+          />
         </svg>
       </button>
 
@@ -38,28 +61,23 @@
       >
         เพิ่มหมวดหมู่
       </button>
-
     </div>
   </div>
 
   <div class="mt-6 grid gap-4 md:grid-cols-2">
-
     @for (item of sortedCategories; track item.category_id) {
       <div
         class="relative rounded-2xl border p-4 transition hover:shadow-sm dark:bg-white/[0.03]"
-
         [class.border-green-200]="item.type_name"
         [class.bg-green-50]="item.type_name === 'INCOME'"
         [class.hover:bg-green-100]="item.type_name === 'INCOME'"
         [class.dark:hover:bg-green-500/10]="item.type_name === 'INCOME'"
-
         [class.border-red-200]="item.type_name === 'EXPENSE'"
         [class.bg-red-50]="item.type_name === 'EXPENSE'"
         [class.hover:bg-red-100]="item.type_name === 'EXPENSE'"
         [class.dark:hover:bg-red-500/10]="item.type_name === 'EXPENSE'"
       >
-
-        <!-- @if (deleteMode) {
+        @if (deleteMode) {
           <button
             class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white transition hover:bg-red-600"
             (click)="openModal('delete', item.category_id)"
@@ -71,14 +89,37 @@
               viewBox="0 0 24 24"
               fill="none"
             >
-              <path d="M10 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M14 11V17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M4 7H20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-              <path d="M6 7L7 19C7.05 19.84 7.73 20.5 8.58 20.5H15.42C16.26 20.5 16.95 19.84 17 19L18 7" stroke="currentColor" stroke-width="2"/>
-              <path d="M9 7V4.5C9 3.94 9.44 3.5 10 3.5H14C14.55 3.5 15 3.94 15 4.5V7" stroke="currentColor" stroke-width="2"/>
+              <path
+                d="M10 11V17"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M14 11V17"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M4 7H20"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M6 7L7 19C7.05 19.84 7.73 20.5 8.58 20.5H15.42C16.26 20.5 16.95 19.84 17 19L18 7"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <path
+                d="M9 7V4.5C9 3.94 9.44 3.5 10 3.5H14C14.55 3.5 15 3.94 15 4.5V7"
+                stroke="currentColor"
+                stroke-width="2"
+              />
             </svg>
           </button>
-        } -->
+        }
 
         <div class="text-lg font-semibold text-gray-800 dark:text-white">
           {{ item.name }}
@@ -89,12 +130,10 @@
           [class.text-green-600]="item.type_name === 'INCOME'"
           [class.text-red-500]="item.type_name === 'EXPENSE'"
         >
-          {{ item.type_name === 'INCOME' ? 'รายรับ' : 'รายจ่าย' }}
+          {{ item.type_name === "INCOME" ? "รายรับ" : "รายจ่าย" }}
         </div>
-
       </div>
     }
-
   </div>
 </div>
 
@@ -103,27 +142,27 @@
   (close)="closeModal()"
   className="max-w-[520px] p-6"
 >
-
-  @if (modalType === 'category') {
+  @if (modalType === "category") {
     <div>
-      <h5 class="text-2xl font-semibold text-gray-800">
-        เพิ่มหมวดหมู่
-      </h5>
+      <h5 class="text-2xl font-semibold text-gray-800">เพิ่มหมวดหมู่</h5>
 
       <div class="mt-6 space-y-4">
-
         <input
           [(ngModel)]="categoryName"
           placeholder="ชื่อหมวดหมู่"
           class="h-11 w-full rounded-xl border px-4"
         />
 
-        <!-- <select
-          [(ngModel)]="categoryType"
+        <select
+          [(ngModel)]="categoryTypeId"
           class="h-11 w-full rounded-xl border px-4"
         >
-          <option value="income">รายรับ</option>
-          <option value="expense">รายจ่าย</option>
+
+          @for (item of transaction; track item.transaction_type_id) {
+            <option [ngValue]="item.transaction_type_id">
+              {{ item.transaction_type_name === 'INCOME' ? 'รายรับ' : 'รายจ่าย' }}
+            </option>
+          }
         </select>
 
         <button
@@ -131,40 +170,29 @@
           (click)="addCategory()"
         >
           บันทึก
-        </button> -->
-
+        </button>
       </div>
     </div>
   }
 
-  @if (modalType === 'delete') {
+  @if (modalType === "delete") {
     <div>
-      <h5 class="text-2xl font-semibold text-gray-800">
-        ยืนยันการลบ
-      </h5>
+      <h5 class="text-2xl font-semibold text-gray-800">ยืนยันการลบ</h5>
 
-      <p class="mt-3 text-sm text-gray-500">
-        ต้องการลบหมวดหมู่นี้ใช่หรือไม่
-      </p>
+      <p class="mt-3 text-sm text-gray-500">ต้องการลบหมวดหมู่นี้ใช่หรือไม่</p>
 
       <div class="mt-6 grid grid-cols-2 gap-3">
-
-        <button
-          class="rounded-xl border py-3"
-          (click)="closeModal()"
-        >
+        <button class="rounded-xl border py-3" (click)="closeModal()">
           ยกเลิก
         </button>
 
-        <!-- <button
+        <button
           class="rounded-xl bg-red-500 py-3 text-white"
           (click)="confirmDelete()"
         >
           ลบรายการ
-        </button> -->
-
+        </button>
       </div>
     </div>
   }
-
 </app-modal>
