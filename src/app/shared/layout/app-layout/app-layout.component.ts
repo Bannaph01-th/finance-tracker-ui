@@ -1,18 +1,20 @@
-import { Component, inject } from '@angular/core';
-import { SidebarService } from '../../services/sidebar.service';
-import { CommonModule } from '@angular/common';
-import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
-import { BackdropComponent } from '../backdrop/backdrop.component';
-import { RouterModule } from '@angular/router';
-import { AppHeaderComponent } from '../app-header/app-header.component';
-import { ModalComponent } from '../../components/ui/modal/modal.component';
+import { Component, inject, OnInit } from "@angular/core";
+import { SidebarService } from "../../services/sidebar.service";
+import { CommonModule } from "@angular/common";
+import { AppSidebarComponent } from "../app-sidebar/app-sidebar.component";
+import { BackdropComponent } from "../backdrop/backdrop.component";
+import { RouterModule } from "@angular/router";
+import { AppHeaderComponent } from "../app-header/app-header.component";
+import { ModalComponent } from "../../components/ui/modal/modal.component";
 
-import { Router, RouterOutlet } from '@angular/router';
-import { AsyncPipe, NgClass } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { Router, RouterOutlet } from "@angular/router";
+import { AsyncPipe, NgClass } from "@angular/common";
+import { FormsModule } from "@angular/forms";
+import { UserService } from "../../services/api/user.service";
+import { UserStateService } from "../../services/api/common/user-stage-service";
 
 @Component({
-  selector: 'app-layout',
+  selector: "app-layout",
   imports: [
     CommonModule,
     RouterModule,
@@ -23,12 +25,11 @@ import { FormsModule } from '@angular/forms';
     ModalComponent,
     RouterOutlet,
     AsyncPipe,
-    NgClass
+    NgClass,
   ],
-  templateUrl: './app-layout.component.html',
+  templateUrl: "./app-layout.component.html",
 })
-
-export class AppLayoutComponent {
+export class AppLayoutComponent implements OnInit {
   readonly isExpanded$;
   readonly isHovered$;
   readonly isMobileOpen$;
@@ -38,20 +39,36 @@ export class AppLayoutComponent {
   isOpen = false;
   financeLimit = 0;
 
-  constructor(public sidebarService: SidebarService) {
+  constructor(
+    public sidebarService: SidebarService,
+    private readonly _userService: UserService,
+    private readonly userState: UserStateService,
+  ) {
     this.isExpanded$ = this.sidebarService.isExpanded$;
     this.isHovered$ = this.sidebarService.isHovered$;
     this.isMobileOpen$ = this.sidebarService.isMobileOpen$;
   }
 
+  ngOnInit() {
+    this.fetchUserProfile();
+  }
+
+  async fetchUserProfile() {
+    const res = await this._userService.getUserProfile();
+    console.log('user profile: ', res);
+    if (res?.resultData) {
+      this.userState.setUser(res.resultData);
+    }
+  }
+
   get containerClasses() {
     return [
-      'flex-1',
-      'transition-all',
-      'duration-300',
-      'ease-in-out',
-      (this.isExpanded$ || this.isHovered$) ? 'xl:ml-[290px]' : 'xl:ml-[90px]',
-      this.isMobileOpen$ ? 'ml-0' : ''
+      "flex-1",
+      "transition-all",
+      "duration-300",
+      "ease-in-out",
+      this.isExpanded$ || this.isHovered$ ? "xl:ml-[290px]" : "xl:ml-[90px]",
+      this.isMobileOpen$ ? "ml-0" : "",
     ];
   }
 
@@ -62,5 +79,4 @@ export class AppLayoutComponent {
   closeModal() {
     this.isOpen = false;
   }
-
 }
