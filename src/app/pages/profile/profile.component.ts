@@ -24,7 +24,7 @@ interface CategoryItem {
   ],
   templateUrl: './profile.component.html'
 })
-export class ProfileComponent {
+export class ProfileComponent{
   isOpen = false;
   modalType: ModalType = 'category';
 

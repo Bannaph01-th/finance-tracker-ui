@@ -22,17 +22,17 @@ export class UserService {
     }
   }
 
-//   async patchUserProfile(userId: string ,payload: UserPayload): Promise<UserResponse | null> {
-//     try{
-//       const response: AxiosResponse<UserResponse> =
-//       await Axios().patch(`/api/users/${userId}`, payload);
+  async patchUserProfile(userId: string ,payload: UserPayload): Promise<UserResponse | null> {
+    try{
+      const response: AxiosResponse<UserResponse> =
+      await Axios().patch(`/users/${userId}`, payload);
 
-//       return response.data;
-//     }catch (error: any){
-//       console.log('errorrrr: ',error)
-//       return error?.response?.data ?? null ;
-//     }
+      return response.data;
+    }catch (error: any){
+      console.log('errorrrr: ',error)
+      return error?.response?.data ?? null ;
+    }
 
-//   }
+  }
 
 }
