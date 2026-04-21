@@ -44,25 +44,25 @@
 
   <div class="mt-6 grid gap-4 md:grid-cols-2">
 
-    @for (item of sortedCategories; track item.id) {
+    @for (item of sortedCategories; track item.category_id) {
       <div
         class="relative rounded-2xl border p-4 transition hover:shadow-sm dark:bg-white/[0.03]"
 
-        [class.border-green-200]="item.type === 'income'"
-        [class.bg-green-50]="item.type === 'income'"
-        [class.hover:bg-green-100]="item.type === 'income'"
-        [class.dark:hover:bg-green-500/10]="item.type === 'income'"
+        [class.border-green-200]="item.type_name"
+        [class.bg-green-50]="item.type_name === 'INCOME'"
+        [class.hover:bg-green-100]="item.type_name === 'INCOME'"
+        [class.dark:hover:bg-green-500/10]="item.type_name === 'INCOME'"
 
-        [class.border-red-200]="item.type === 'expense'"
-        [class.bg-red-50]="item.type === 'expense'"
-        [class.hover:bg-red-100]="item.type === 'expense'"
-        [class.dark:hover:bg-red-500/10]="item.type === 'expense'"
+        [class.border-red-200]="item.type_name === 'EXPENSE'"
+        [class.bg-red-50]="item.type_name === 'EXPENSE'"
+        [class.hover:bg-red-100]="item.type_name === 'EXPENSE'"
+        [class.dark:hover:bg-red-500/10]="item.type_name === 'EXPENSE'"
       >
 
-        @if (deleteMode) {
+        <!-- @if (deleteMode) {
           <button
             class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white transition hover:bg-red-600"
-            (click)="openModal('delete', item.id)"
+            (click)="openModal('delete', item.category_id)"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +78,7 @@
               <path d="M9 7V4.5C9 3.94 9.44 3.5 10 3.5H14C14.55 3.5 15 3.94 15 4.5V7" stroke="currentColor" stroke-width="2"/>
             </svg>
           </button>
-        }
+        } -->
 
         <div class="text-lg font-semibold text-gray-800 dark:text-white">
           {{ item.name }}
@@ -86,10 +86,10 @@
 
         <div
           class="mt-1 text-sm font-medium"
-          [class.text-green-600]="item.type === 'income'"
-          [class.text-red-500]="item.type === 'expense'"
+          [class.text-green-600]="item.type_name === 'INCOME'"
+          [class.text-red-500]="item.type_name === 'EXPENSE'"
         >
-          {{ item.type === 'income' ? 'รายรับ' : 'รายจ่าย' }}
+          {{ item.type_name === 'INCOME' ? 'รายรับ' : 'รายจ่าย' }}
         </div>
 
       </div>
@@ -118,7 +118,7 @@
           class="h-11 w-full rounded-xl border px-4"
         />
 
-        <select
+        <!-- <select
           [(ngModel)]="categoryType"
           class="h-11 w-full rounded-xl border px-4"
         >
@@ -131,7 +131,7 @@
           (click)="addCategory()"
         >
           บันทึก
-        </button>
+        </button> -->
 
       </div>
     </div>
@@ -156,12 +156,12 @@
           ยกเลิก
         </button>
 
-        <button
+        <!-- <button
           class="rounded-xl bg-red-500 py-3 text-white"
           (click)="confirmDelete()"
         >
           ลบรายการ
-        </button>
+        </button> -->
 
       </div>
     </div>
