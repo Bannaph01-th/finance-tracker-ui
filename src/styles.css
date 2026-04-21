@@ -922,3 +922,17 @@ pre[class*="language-"].line-numbers {
 .flatpickr-next-month:hover {
   background: #f3f4f6 !important;
 }
+
+@keyframes bounce-soft {
+  0%, 100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.18);
+  }
+}
+
+.animate-bounce-soft {
+  animation: bounce-soft 1.6s ease-in-out infinite;
+}

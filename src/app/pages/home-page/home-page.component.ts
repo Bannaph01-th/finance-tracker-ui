@@ -67,52 +67,88 @@ export class HomePageComponent {
 
   public series: ApexAxisChartSeries = [
     {
-      name: 'Sales',
-      data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+      name: 'รายรับ',
+      data: [18000, 22000, 19500, 25000, 21000, 24000, 26000, 23000, 24500, 27000, 25500, 29000]
     },
+    {
+      name: 'รายจ่าย',
+      data: [12000, 15000, 14000, 18000, 16000, 17000, 19000, 16500, 17500, 20000, 18500, 21000]
+    }
   ];
+
   public chart: ApexChart = {
-    fontFamily: 'Outfit, sans-serif',
     type: 'bar',
-    height: 180,
-    toolbar: { show: false },
+    height: 320,
+    toolbar: {
+      show: false
+    },
+    fontFamily: 'Outfit, sans-serif'
   };
+
   public xaxis: ApexXAxis = {
     categories: [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+      'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
     ],
-    axisBorder: { show: false },
-    axisTicks: { show: false },
+    axisBorder: {
+      show: false
+    },
+    axisTicks: {
+      show: false
+    }
   };
+
   public plotOptions: ApexPlotOptions = {
     bar: {
       horizontal: false,
-      columnWidth: '39%',
-      borderRadius: 5,
-      borderRadiusApplication: 'end',
-    },
+      columnWidth: '75%',
+      borderRadius: 3,
+      borderRadiusApplication: 'end'
+    }
   };
-  public dataLabels: ApexDataLabels = { enabled: false };
+
+  public dataLabels: ApexDataLabels = {
+    enabled: false
+  };
+
   public stroke: ApexStroke = {
     show: true,
-    width: 4,
-    colors: ['transparent'],
+    width: 2,
+    colors: ['transparent']
   };
+
   public legend: ApexLegend = {
     show: true,
     position: 'top',
     horizontalAlign: 'left',
-    fontFamily: 'Outfit',
+    fontSize: '14px'
   };
-  public yaxis: ApexYAxis = { title: { text: undefined } };
-  public grid: ApexGrid = { yaxis: { lines: { show: true } } };
-  public fill: ApexFill = { opacity: 1 };
+
+  public yaxis: ApexYAxis = {
+    labels: {
+      formatter: (val) => `฿${val.toLocaleString()}`
+    }
+  };
+
+  public grid: ApexGrid = {
+    borderColor: '#e5e7eb',
+    strokeDashArray: 4
+  };
+
+  public fill: ApexFill = {
+    opacity: 1
+  };
+
   public tooltip: ApexTooltip = {
-    x: { show: false },
-    y: { formatter: (val: number) => `${val}` },
+    y: {
+      formatter: (val: number) => `฿${val.toLocaleString()}`
+    }
   };
-  public colors: string[] = ['#465fff'];
+
+  public colors: string[] = [
+    '#22c55e',
+    '#ef4444'
+  ];
 
   openModal(type: 'plan' | 'finance-use' | 'list' | 'frog') {
     this.modalType = type;
