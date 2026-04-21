@@ -6,12 +6,19 @@ import { StatisticsChartComponent } from '../../shared/components/ecommerce/stat
 import { DemographicCardComponent } from '../../shared/components/ecommerce/demographic-card/demographic-card.component';
 import { RecentOrdersComponent } from '../../shared/components/ecommerce/recent-orders/recent-orders.component';
 import { DecimalPipe } from '@angular/common';
+import { NgApexchartsModule, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexPlotOptions, ApexDataLabels, ApexStroke, ApexLegend, ApexYAxis, ApexGrid, ApexFill, ApexTooltip } from 'ng-apexcharts';
+import { PageBreadcrumbComponent } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { FormsModule } from '@angular/forms';
+import { ModalComponent } from '../../shared/components/ui/modal/modal.component';
 
 @Component({
   selector: 'app-home-page',
   imports: [
     // EcommerceMetricsComponent,
-    MonthlySalesChartComponent,
+    FormsModule,
+    NgApexchartsModule,
+    ModalComponent,
+    PageBreadcrumbComponent,
     // MonthlyTargetComponent,
     // StatisticsChartComponent,
     // DemographicCardComponent,
@@ -21,6 +28,11 @@ import { DecimalPipe } from '@angular/common';
   templateUrl: './home-page.component.html',
 })
 export class HomePageComponent {
+
+  isOpen = false;
+  modalType: 'plan' | 'finance-use' | 'list' | 'frog' = 'plan';
+
+  financeLimit = 0;
 
   cards = [
     {
@@ -52,4 +64,62 @@ export class HomePageComponent {
       limit: 100000
     }
   ];
+
+  public series: ApexAxisChartSeries = [
+    {
+      name: 'Sales',
+      data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+    },
+  ];
+  public chart: ApexChart = {
+    fontFamily: 'Outfit, sans-serif',
+    type: 'bar',
+    height: 180,
+    toolbar: { show: false },
+  };
+  public xaxis: ApexXAxis = {
+    categories: [
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ],
+    axisBorder: { show: false },
+    axisTicks: { show: false },
+  };
+  public plotOptions: ApexPlotOptions = {
+    bar: {
+      horizontal: false,
+      columnWidth: '39%',
+      borderRadius: 5,
+      borderRadiusApplication: 'end',
+    },
+  };
+  public dataLabels: ApexDataLabels = { enabled: false };
+  public stroke: ApexStroke = {
+    show: true,
+    width: 4,
+    colors: ['transparent'],
+  };
+  public legend: ApexLegend = {
+    show: true,
+    position: 'top',
+    horizontalAlign: 'left',
+    fontFamily: 'Outfit',
+  };
+  public yaxis: ApexYAxis = { title: { text: undefined } };
+  public grid: ApexGrid = { yaxis: { lines: { show: true } } };
+  public fill: ApexFill = { opacity: 1 };
+  public tooltip: ApexTooltip = {
+    x: { show: false },
+    y: { formatter: (val: number) => `${val}` },
+  };
+  public colors: string[] = ['#465fff'];
+
+  openModal(type: 'plan' | 'finance-use' | 'list' | 'frog') {
+    this.modalType = type;
+    this.isOpen = true;
+  }
+
+  closeModal() {
+    this.isOpen = false;
+  }
 }

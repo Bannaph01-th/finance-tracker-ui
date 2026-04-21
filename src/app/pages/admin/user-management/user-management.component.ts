@@ -7,13 +7,14 @@ import { InputFieldComponent } from '../../../shared/components/form/input/input
 import { SelectComponent } from '../../../shared/components/form/select/select.component';
 import { DatePickerComponent } from '../../../shared/components/form/date-picker/date-picker.component';
 import { TimePickerComponent } from '../../../shared/components/form/time-picker/time-picker.component';
+import { BasicTableThreeComponent } from '../../../shared/components/tables/basic-tables/basic-table-three/basic-table-three.component';
 
 @Component({
   selector: 'app-user-management',
   imports: [
     ComponentCardComponent,
     PageBreadcrumbComponent,
-    FinanceTableComponent,
+    BasicTableThreeComponent,
     LabelComponent,
     InputFieldComponent,
     SelectComponent,

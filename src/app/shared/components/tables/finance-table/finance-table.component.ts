@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { ButtonComponent } from '../../ui/button/button.component';
-import { TableDropdownComponent } from '../../common/table-dropdown/table-dropdown.component';
-import { BadgeComponent } from '../../ui/badge/badge.component';
+// import { TableDropdownComponent } from '../../common/table-dropdown/table-dropdown.component';
+// import { BadgeComponent } from '../../ui/badge/badge.component';
+// import { DatePickerComponent } from '../../form/date-picker/date-picker.component';
+import { MonthPickerComponent } from '../../form/month-picker/month-picker.component';
 
 interface Transaction {
   image: string;
@@ -17,9 +19,9 @@ interface Transaction {
   selector: 'app-finance-table',
   imports: [
     CommonModule,
-    ButtonComponent,
-    TableDropdownComponent,
-    BadgeComponent,
+    MonthPickerComponent,
+    // TableDropdownComponent,
+    // BadgeComponent,
   ],
   templateUrl: './finance-table.component.html',
   styles: ``
@@ -28,6 +30,9 @@ export class FinanceTableComponent {
 
   // Type definition for the transaction data
 
+  @Output() openModal = new EventEmitter<void>();
+
+  selectedMonth = this.getCurrentYearMonth();
 
   transactionData: Transaction[] = [
     {
@@ -371,5 +376,33 @@ export class FinanceTableComponent {
           x.category_info.name === cat
       )
       .reduce((sum, x) => sum + x.amount, 0);
+  }
+
+  openModalEmit() {
+    this.openModal.emit();
+  }
+
+  private getCurrentYearMonth(): string {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+
+    return `${year}-${month}`;
+  }
+
+  handleMonthChange(event: {
+    selectedDates: Date[];
+    dateStr: string;
+    instance: any;
+  }) {
+    this.selectedMonth = event.dateStr;
+    console.log('YYYY-MM:', this.selectedMonth);
+
+    const payload = {
+      year_month: this.selectedMonth
+    };
+
+    console.log(payload);
   }
 }

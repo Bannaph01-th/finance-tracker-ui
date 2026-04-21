@@ -3,19 +3,94 @@
     <app-sidebar></app-sidebar>
     <app-backdrop></app-backdrop>
   </div>
+
   <div
-      class="flex-1 transition-all duration-300 ease-in-out"
-      [ngClass]="{
-        'xl:ml-[290px]': (isExpanded$ | async) || (isHovered$ | async),
-        'xl:ml-[90px]': !(isExpanded$ | async) && !(isHovered$ | async),
-        'ml-0': (isMobileOpen$ | async)
-      }"
+    class="flex-1 transition-all duration-300 ease-in-out"
+    [ngClass]="{
+      'xl:ml-[290px]': (isExpanded$ | async) || (isHovered$ | async),
+      'xl:ml-[90px]': !(isExpanded$ | async) && !(isHovered$ | async),
+      'ml-0': (isMobileOpen$ | async)
+    }"
   >
-    <!-- app header start -->
-    <app-header/>
-    <!-- app header end -->
+    <app-header />
+
     <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
       <router-outlet></router-outlet>
+
+      @if (router.url === '/' || router.url === '/dashboard') {
+        <div
+          class="rounded-3xl bg-gradient-to-br from-brand-500 to-brand-600 p-8 text-white shadow-xl"
+        >
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm opacity-80">UTCC - Finance Tracker</div>
+              <div class="mt-2 text-3xl font-bold">
+                ยินดีต้อนรับสู่ระบบจัดการการเงิน
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 grid gap-4 md:grid-cols-3">
+            <div
+              class="cursor-pointer rounded-2xl bg-white/10 p-4 backdrop-blur-sm transition-all duration-300 ease-out hover:scale-105 hover:bg-white/20 hover:shadow-2xl hover:-translate-y-1"
+              (click)="openModal()"
+            >
+              <div class="text-sm opacity-80">วางแผนการเงินของคุณ</div>
+              <div class="mt-2 text-xl font-semibold">Finances Planing</div>
+            </div>
+
+            <div
+              class="cursor-pointer rounded-2xl bg-white/10 p-4 backdrop-blur-sm transition-all duration-300 ease-out hover:scale-105 hover:bg-white/20 hover:shadow-2xl hover:-translate-y-1"
+              routerLink="/home-page"
+            >
+              <div class="text-sm opacity-80">บันทึกรายรับรายจ่าย</div>
+              <div class="mt-2 text-xl font-semibold">Income & Expense</div>
+            </div>
+
+            <div
+              class="cursor-pointer rounded-2xl bg-white/10 p-4 backdrop-blur-sm transition-all duration-300 ease-out hover:scale-105 hover:bg-white/20 hover:shadow-2xl hover:-translate-y-1"
+              routerLink="/summary"
+            >
+              <div class="text-sm opacity-80">ดูรายรับรายจ่ายของคุณ</div>
+              <div class="mt-2 text-xl font-semibold">Income & Expense Table</div>
+            </div>
+          </div>
+
+          <div class="mt-6 text-2xl text-end opacity-80">
+            เริ่มต้นวางแผนการเงินของคุณได้ทันที !!!
+          </div>
+        </div>
+      }
     </div>
   </div>
+
+  <app-modal
+    [isOpen]="isOpen"
+    (close)="closeModal()"
+    className="max-w-[700px] p-6 lg:p-10"
+  >
+    <div class="flex flex-col px-2 overflow-y-auto custom-scrollbar">
+      <div>
+        <h5 class="mb-2 font-semibold text-gray-800 modal-title text-theme-xl dark:text-white/90 lg:text-2xl">
+          วางแผนการเงินของคุณ
+        </h5>
+        <p class="text-sm text-gray-500 dark:text-gray-400">
+          วางแผนการเงินของคุณเพื่อให้ระบบของเราสามารถช่วยเหลือคุณได้!
+        </p>
+      </div>
+      <div class="mt-8">
+        <div>
+          <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+            วงเงินที่คุณต้องใช้ต่อเดือน (บาท)
+          </label>
+          <input
+            id="finance-limit"
+            type="number"
+            [(ngModel)]="financeLimit"
+            class="dark:bg-dark-900 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:outline-hidden focus:ring-3 focus:ring-brand-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+          />
+        </div>
+      </div>
+    </div>
+  </app-modal>
 </div>

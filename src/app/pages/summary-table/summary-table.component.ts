@@ -7,6 +7,7 @@ import { InputFieldComponent } from '../../shared/components/form/input/input-fi
 import { SelectComponent } from '../../shared/components/form/select/select.component';
 import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
 import { TimePickerComponent } from '../../shared/components/form/time-picker/time-picker.component';
+import { ModalComponent } from '../../shared/components/ui/modal/modal.component';
 
 @Component({
   selector: 'app-summary-table-page',
@@ -14,11 +15,12 @@ import { TimePickerComponent } from '../../shared/components/form/time-picker/ti
     // ComponentCardComponent,
     PageBreadcrumbComponent,
     FinanceTableComponent,
-    LabelComponent,
-    InputFieldComponent,
-    SelectComponent,
-    DatePickerComponent,
-    TimePickerComponent
+    ModalComponent,
+    // LabelComponent,
+    // InputFieldComponent,
+    // SelectComponent,
+    // DatePickerComponent,
+    // TimePickerComponent
   ],
   templateUrl: './summary-table.component.html',
   styles: ``
@@ -26,6 +28,8 @@ import { TimePickerComponent } from '../../shared/components/form/time-picker/ti
 export class SummaryTableComponent {
 
   showPassword = false;
+  isOpen = false;
+
   options = [
     { value: 'marketing', label: 'Marketing' },
     { value: 'template', label: 'Template' },
@@ -53,5 +57,13 @@ export class SummaryTableComponent {
 
   onTimeSelected(time: string) {
     console.log('Picked time:', time); // e.g. "10:45"
+  }
+
+  openModal() {
+    this.isOpen = true;
+  }
+
+  closeModal() {
+    this.isOpen = false;
   }
 }

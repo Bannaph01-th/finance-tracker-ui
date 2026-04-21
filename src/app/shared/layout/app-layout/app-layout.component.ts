@@ -1,19 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SidebarService } from '../../services/sidebar.service';
 import { CommonModule } from '@angular/common';
 import { AppSidebarComponent } from '../app-sidebar/app-sidebar.component';
 import { BackdropComponent } from '../backdrop/backdrop.component';
 import { RouterModule } from '@angular/router';
 import { AppHeaderComponent } from '../app-header/app-header.component';
+import { ModalComponent } from '../../components/ui/modal/modal.component';
+
+import { Router, RouterOutlet } from '@angular/router';
+import { AsyncPipe, NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-layout',
   imports: [
     CommonModule,
     RouterModule,
+    FormsModule,
     AppHeaderComponent,
     AppSidebarComponent,
-    BackdropComponent
+    BackdropComponent,
+    ModalComponent,
+    RouterOutlet,
+    AsyncPipe,
+    NgClass
   ],
   templateUrl: './app-layout.component.html',
 })
@@ -22,6 +32,11 @@ export class AppLayoutComponent {
   readonly isExpanded$;
   readonly isHovered$;
   readonly isMobileOpen$;
+
+  readonly router = inject(Router);
+
+  isOpen = false;
+  financeLimit = 0;
 
   constructor(public sidebarService: SidebarService) {
     this.isExpanded$ = this.sidebarService.isExpanded$;
@@ -38,6 +53,14 @@ export class AppLayoutComponent {
       (this.isExpanded$ || this.isHovered$) ? 'xl:ml-[290px]' : 'xl:ml-[90px]',
       this.isMobileOpen$ ? 'ml-0' : ''
     ];
+  }
+
+  openModal() {
+    this.isOpen = true;
+  }
+
+  closeModal() {
+    this.isOpen = false;
   }
 
 }
