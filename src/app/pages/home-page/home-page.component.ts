@@ -117,6 +117,7 @@ export class HomePageComponent implements OnInit {
 
   async loadDashboardSummary(): Promise<void> {
     const res = await this.dashboardService.loadDashboardFinanceSummary();
+    await this.dashboardService.loadDashboard();
 
     const data =
       res?.resultData ??

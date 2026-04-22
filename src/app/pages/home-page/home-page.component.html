@@ -43,8 +43,16 @@
 
         <div class="mt-6 h-3 rounded-full bg-white/20">
           <div
-            class="h-3 rounded-full bg-emerald-300"
-            [style.width.%]="financeLimit > 0 ? (dashboardSummary.expense_this_month / financeLimit) * 100 : 0"
+            class="h-3 rounded-full"
+            [class.bg-emerald-300]="dashboardSummary.balance >= 0"
+            [class.bg-red-400]="dashboardSummary.balance < 0"
+            [style.width.%]="
+              financeLimit > 0
+                ? ((dashboardSummary.expense_this_month / financeLimit) * 100) > 100
+                  ? 100
+                  : ((dashboardSummary.expense_this_month / financeLimit) * 100 | number:'1.0-0')
+                : 0
+            "
           ></div>
         </div>
 
@@ -53,7 +61,9 @@
             ใช้ไป
             {{
               financeLimit > 0
-                ? ((dashboardSummary.expense_this_month / financeLimit) * 100 | number:'1.0-0')
+                ? 
+                ((dashboardSummary.expense_this_month / financeLimit) * 100) > 100 ? 100 :
+                ((dashboardSummary.expense_this_month / financeLimit) * 100 | number:'1.0-0')
                 : 0
             }}%
             จาก วงเงิน {{ financeLimit | number:'1.0-0' }} บาท

@@ -1,65 +1,87 @@
 <div class="grid grid-cols-12 gap-4 md:gap-6">
+
   <div class="col-span-12 space-y-6 xl:col-span-12">
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
-      <!-- Metric Item Start -->
-      <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div class="flex items-center justify-center w-12 h-12 bg-green-200 rounded-xl dark:bg-gray-800" [innerHTML]="icons.groupIcon | safeHtml">
-        </div>
-        <div class="flex items-end justify-between mt-5">
-          <div>
-            <span class="text-md text-gray-500 dark:text-gray-400">จำนวนผู้ใช้งานทั้งหมด</span>
-            <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">6,359</h4>
-          </div>
-          <app-badge color="success">
-            <span [innerHTML]="icons.arrowUpIcon | safeHtml"></span>
-            11.01%
-          </app-badge>
-        </div>
-      </div>
-      <!-- Metric Item End -->
 
-      <!-- Metric Item Start -->
+      <!-- Total Users -->
       <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div class="flex items-center justify-center w-12 h-12 bg-yellow-200 rounded-xl dark:bg-gray-800" [innerHTML]="icons.groupIcon| safeHtml">
-        </div>
-        <div class="flex items-end justify-between mt-5">
-          <div>
-            <span class="text-md text-gray-500 dark:text-gray-400">จำนวนผู้ใช้งานที่ไม่ใช่ผู้ดูแลระบบ</span>
-            <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">2,000</h4>
-          </div>
-          <app-badge color="error">
-            <span [innerHTML]="icons.arrowDownIcon | safeHtml"></span>
-            9.05%
-          </app-badge>
-        </div>
-      </div>
-      <!-- Metric Item End -->
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-xl bg-green-200 dark:bg-gray-800"
+          [innerHTML]="icons.groupIcon | safeHtml"
+        ></div>
 
-      <!-- Metric Item Start -->
-      <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
-        <div class="flex items-center justify-center w-12 h-12 bg-brand-200 rounded-xl dark:bg-gray-800" [innerHTML]="icons.groupIcon| safeHtml">
-        </div>
-        <div class="flex items-end justify-between mt-5">
-          <div>
-            <span class="text-md text-gray-500 dark:text-gray-400">จำนวนผู้ใช้งานที่เป็นผู้ดูแลระบบ</span>
-            <h4 class="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">4,359</h4>
-          </div>
-          <app-badge color="error">
-            <span [innerHTML]="icons.arrowDownIcon | safeHtml"></span>
-            9.05%
-          </app-badge>
+        <div class="mt-5">
+          <span class="text-md text-gray-500 dark:text-gray-400">
+            จำนวนผู้ใช้งานทั้งหมด
+          </span>
+
+          <h4 class="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
+            {{ summary.total_users | number }}
+          </h4>
         </div>
       </div>
-      <!-- Metric Item End -->
+
+      <!-- Normal Users -->
+      <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-xl bg-yellow-200 dark:bg-gray-800"
+          [innerHTML]="icons.groupIcon | safeHtml"
+        ></div>
+
+        <div class="mt-5">
+          <span class="text-md text-gray-500 dark:text-gray-400">
+            จำนวนผู้ใช้งานที่ไม่ใช่ผู้ดูแลระบบ
+          </span>
+
+          <h4 class="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
+            {{ summary.normal_users | number }}
+          </h4>
+        </div>
+      </div>
+
+      <!-- Admin Users -->
+      <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-200 dark:bg-gray-800"
+          [innerHTML]="icons.groupIcon | safeHtml"
+        ></div>
+
+        <div class="mt-5">
+          <span class="text-md text-gray-500 dark:text-gray-400">
+            จำนวนผู้ใช้งานที่เป็นผู้ดูแลระบบ
+          </span>
+
+          <h4 class="mt-2 text-title-sm font-bold text-gray-800 dark:text-white/90">
+            {{ summary.admin_users | number }}
+          </h4>
+        </div>
+      </div>
+
     </div>
   </div>
 
+  <!-- Chart -->
   <div class="col-span-12 rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
+    <div class="mb-4 text-lg font-semibold text-gray-800 dark:text-white">
+      สรุปจำนวนผู้ใช้งานรายเดือน
+    </div>
+
     <div class="max-w-full overflow-x-auto custom-scrollbar">
       <div class="-ml-5 min-w-[650px] xl:min-w-full pl-2">
-        <apx-chart [series]="series" [chart]="chart" [xaxis]="xaxis" [plotOptions]="plotOptions" [dataLabels]="dataLabels"
-          [stroke]="stroke" [legend]="legend" [yaxis]="yaxis" [grid]="grid" [fill]="fill" [tooltip]="tooltip"
-          [colors]="colors"></apx-chart>
+        <apx-chart
+          [series]="series"
+          [chart]="chart"
+          [xaxis]="xaxis"
+          [plotOptions]="plotOptions"
+          [dataLabels]="dataLabels"
+          [stroke]="stroke"
+          [legend]="legend"
+          [yaxis]="yaxis"
+          [grid]="grid"
+          [fill]="fill"
+          [tooltip]="tooltip"
+          [colors]="colors"
+        ></apx-chart>
       </div>
     </div>
   </div>
