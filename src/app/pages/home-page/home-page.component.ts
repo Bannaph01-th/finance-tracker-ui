@@ -117,7 +117,6 @@ export class HomePageComponent implements OnInit {
 
   async loadDashboardSummary(): Promise<void> {
     const res = await this.dashboardService.loadDashboardFinanceSummary();
-    await this.dashboardService.loadDashboard();
 
     const data =
       res?.resultData ??
@@ -289,11 +288,11 @@ export class HomePageComponent implements OnInit {
   public series: ApexAxisChartSeries = [
     {
       name: 'รายรับ',
-      data: [18000, 22000, 19500, 25000, 21000, 24000, 26000, 23000, 24500, 27000, 25500, 29000]
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     },
     {
       name: 'รายจ่าย',
-      data: [12000, 15000, 14000, 18000, 16000, 17000, 19000, 16500, 17500, 20000, 18500, 21000]
+      data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
   ];
 
