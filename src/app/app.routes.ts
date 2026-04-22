@@ -30,6 +30,7 @@ export const routes: Routes = [
   {
     path: "",
     component: AppLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: "home-page",
@@ -39,7 +40,7 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       {
-        path: "summary",
+        path: "finance-table",
         component: SummaryTableComponent,
         title: "Finance Tracker Summary Page",
         canActivate: [authGuard],

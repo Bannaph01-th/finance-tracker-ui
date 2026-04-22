@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Output, EventEmitter } from '@angular/core';
 import { ButtonComponent } from '../../ui/button/button.component';
-// import { TableDropdownComponent } from '../../common/table-dropdown/table-dropdown.component';
+import { TableDropdownComponent } from '../../common/table-dropdown/table-dropdown.component';
 // import { BadgeComponent } from '../../ui/badge/badge.component';
 // import { DatePickerComponent } from '../../form/date-picker/date-picker.component';
 import { MonthPickerComponent } from '../../form/month-picker/month-picker.component';
@@ -20,7 +20,7 @@ interface Transaction {
   imports: [
     CommonModule,
     MonthPickerComponent,
-    // TableDropdownComponent,
+    TableDropdownComponent,
     // BadgeComponent,
   ],
   templateUrl: './finance-table.component.html',
@@ -289,6 +289,96 @@ export class FinanceTableComponent {
         amount: 500,
         category_info: {
           name: 'ค่าใช้จ่ายอื่นๆ',
+          type: 'expense',
+        },
+        item_name: 'ซื้อขม',
+      },
+      {
+        transaction_date: '2024-01-13T00:00:00Z',
+        amount: 500,
+        category_info: {
+          name: 'ค่าใช้จ่ายอื่นๆa',
+          type: 'expense',
+        },
+        item_name: 'ซื้อขม',
+      },
+      {
+        transaction_date: '2024-01-13T00:00:00Z',
+        amount: 500,
+        category_info: {
+          name: 'ค่าใช้จ่ายอื่นๆb',
+          type: 'expense',
+        },
+        item_name: 'ซื้อขม',
+      },
+      {
+        transaction_date: '2024-01-13T00:00:00Z',
+        amount: 500,
+        category_info: {
+          name: 'ค่าใช้จ่ายอื่นๆc',
+          type: 'expense',
+        },
+        item_name: 'ซื้อขม',
+      },
+      {
+        transaction_date: '2024-01-13T00:00:00Z',
+        amount: 500,
+        category_info: {
+          name: 'ค่าใช้จ่ายอื่นๆd',
+          type: 'expense',
+        },
+        item_name: 'ซื้อขม',
+      },
+      {
+        transaction_date: '2024-01-13T00:00:00Z',
+        amount: 500,
+        category_info: {
+          name: 'ค่าใช้จ่ายอื่นๆe',
+          type: 'expense',
+        },
+        item_name: 'ซื้อขม',
+      },
+      {
+        transaction_date: '2024-01-13T00:00:00Z',
+        amount: 500,
+        category_info: {
+          name: 'ค่าใช้จ่ายอื่นๆf',
+          type: 'expense',
+        },
+        item_name: 'ซื้อขม',
+      },
+      {
+        transaction_date: '2024-01-13T00:00:00Z',
+        amount: 500,
+        category_info: {
+          name: 'ค่าใช้จ่ายอื่นๆg',
+          type: 'expense',
+        },
+        item_name: 'ซื้อขม',
+      },
+      {
+        transaction_date: '2024-01-13T00:00:00Z',
+        amount: 500,
+        category_info: {
+          name: 'ค่าใช้จ่ายอื่นๆh',
+          type: 'expense',
+        },
+        item_name: 'ซื้อขม',
+      },
+      {
+        transaction_date: '2024-01-13T00:00:00Z',
+        amount: 500,
+        category_info: {
+          name: 'ค่าใช้จ่ายอื่นๆi',
+          type: 'expense',
+        },
+        item_name: 'ซื้อขม',
+      },
+      {
+        transaction_date: '2024-01-13T00:00:00Z',
+        amount: 500,
+        category_info: {
+          name: 'ค่าใช้จ่ายอื่นๆj',
           type: 'expense',
         },
         item_name: 'ซื้อขม',

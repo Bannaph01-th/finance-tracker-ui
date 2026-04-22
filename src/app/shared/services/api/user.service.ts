@@ -22,10 +22,36 @@ export class UserService {
     }
   }
 
+  // get user list
+  async load(): Promise<UserResponse | null> {
+    try {
+      const response: AxiosResponse<UserResponse> =
+        await Axios().get("/users");
+
+      return response.data;
+    } catch (error: any) {
+      console.log(error);
+      return error?.response?.data ?? null;
+    }
+  }
+
   async patchUserProfile(userId: string ,payload: UserPayload): Promise<UserResponse | null> {
     try{
       const response: AxiosResponse<UserResponse> =
       await Axios().patch(`/users/${userId}`, payload);
+
+      return response.data;
+    }catch (error: any){
+      console.log('errorrrr: ',error)
+      return error?.response?.data ?? null ;
+    }
+
+  }
+
+  async deleteUser(userId: string): Promise<UserResponse | null> {
+    try{
+      const response: AxiosResponse<UserResponse> =
+      await Axios().delete(`/users/${userId}`);
 
       return response.data;
     }catch (error: any){

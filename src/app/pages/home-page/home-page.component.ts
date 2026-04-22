@@ -1,69 +1,224 @@
-import { Component } from '@angular/core';
-import { EcommerceMetricsComponent } from '../../shared/components/ecommerce/ecommerce-metrics/ecommerce-metrics.component';
-import { MonthlySalesChartComponent } from '../../shared/components/ecommerce/monthly-sales-chart/monthly-sales-chart.component';
-import { MonthlyTargetComponent } from '../../shared/components/ecommerce/monthly-target/monthly-target.component';
-import { StatisticsChartComponent } from '../../shared/components/ecommerce/statics-chart/statics-chart.component';
-import { DemographicCardComponent } from '../../shared/components/ecommerce/demographic-card/demographic-card.component';
-import { RecentOrdersComponent } from '../../shared/components/ecommerce/recent-orders/recent-orders.component';
-import { DecimalPipe } from '@angular/common';
-import { NgApexchartsModule, ApexAxisChartSeries, ApexChart, ApexXAxis, ApexPlotOptions, ApexDataLabels, ApexStroke, ApexLegend, ApexYAxis, ApexGrid, ApexFill, ApexTooltip } from 'ng-apexcharts';
-import { PageBreadcrumbComponent } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
+import { Component, OnInit } from '@angular/core';
+import {
+  NgApexchartsModule,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexPlotOptions,
+  ApexDataLabels,
+  ApexStroke,
+  ApexLegend,
+  ApexYAxis,
+  ApexGrid,
+  ApexFill,
+  ApexTooltip
+} from 'ng-apexcharts';
 import { FormsModule } from '@angular/forms';
+import { PageBreadcrumbComponent } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { ModalComponent } from '../../shared/components/ui/modal/modal.component';
+
+import { TransactionService } from '../../shared/services/api/transactions.service';
+import { CategoryService } from '../../shared/services/api/category.service';
+import { Category } from '../../shared/services/interfaces/category.interface';
+import { Transaction } from '../../shared/services/interfaces/transaction.interface';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { UserService } from '../../shared/services/api/user.service';
 
 @Component({
   selector: 'app-home-page',
+  standalone: true,
   imports: [
-    // EcommerceMetricsComponent,
     FormsModule,
     NgApexchartsModule,
     ModalComponent,
     PageBreadcrumbComponent,
-    // MonthlyTargetComponent,
-    // StatisticsChartComponent,
-    // DemographicCardComponent,
-    // RecentOrdersComponent,
-    // DecimalPipe
+    DatePipe,
+    DecimalPipe
   ],
   templateUrl: './home-page.component.html',
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit {
+
+  constructor(
+    private transactionService: TransactionService,
+    private categoryService: CategoryService,
+    private userService: UserService
+  ) {}
 
   isOpen = false;
+  loading = false;
+
+  userProfile: any = null;
+  savingLimit = false;
+
   modalType: 'plan' | 'finance-use' | 'list' | 'frog' = 'plan';
 
   financeLimit = 0;
 
-  cards = [
-    {
-      name: 'Titanium MasterCard',
-      number: 'xxxx',
-      due: '20 JUN 19',
-      amount: 2624.92,
-      limit: 276900
-    },
-    {
-      name: 'Visa Platinum',
-      number: '1030',
-      due: '12 JUN 19',
-      amount: 3599,
-      limit: 296401
-    },
-    {
-      name: 'Beyond Platinum',
-      number: '8242',
-      due: '18 JUN 19',
-      amount: 2625.82,
-      limit: 183296
-    },
-    {
-      name: 'Platinum',
-      number: 'xxxx',
-      due: '17 JUN 19',
-      amount: 0,
-      limit: 100000
+  categories: Category[] = [];
+  transactions: Transaction[] = [];
+
+  form = {
+    transactions_id: '',
+    user_id: '',
+    category_id: '',
+    amount: 0,
+    note: '',
+    transaction_date: ''
+  };
+
+  async ngOnInit(): Promise<void> {
+    this.resetForm();
+
+    await Promise.all([
+      this.loadCategories(),
+      this.loadTransactions(),
+      this.loadProfile()
+    ]);
+  }
+
+  get incomeCategories() {
+    return this.categories.filter((item) => item.type_id === 1);
+  }
+
+  get expenseCategories() {
+    return this.categories.filter((item) => item.type_id === 2);
+  }
+
+  async loadCategories(): Promise<void> {
+    const res = await this.categoryService.getAllCategory();
+    this.categories = res?.resultData?.categories ?? [];
+  }
+
+  async loadTransactions(): Promise<void> {
+    const res = await this.transactionService.loadTransactions();
+    this.transactions = res?.resultData.transactions ?? [];
+  }
+
+  async loadProfile(): Promise<void> {
+    const res = await this.userService.getUserProfile();
+
+    this.userProfile = res?.resultData ?? null;
+
+    this.financeLimit = Number(this.userProfile?.money_limit || 0);
+  }
+
+  async saveFinanceLimit(): Promise<void> {
+    if (!this.userProfile?.user_id) return;
+
+    this.savingLimit = true;
+
+    const res = await this.userService.patchUserProfile(
+      this.userProfile.user_id,
+      {
+        money_limit: Number(this.financeLimit)
+      }
+    );
+
+    this.savingLimit = false;
+
+    if (res) {
+      await this.loadProfile();
+      this.closeModal();
     }
-  ];
+  }
+
+  openModal(type: 'plan' | 'finance-use' | 'list' | 'frog'): void {
+    this.modalType = type;
+    this.isOpen = true;
+
+    if (type === 'finance-use') {
+      this.resetForm();
+    }
+  }
+
+  closeModal(): void {
+    this.isOpen = false;
+  }
+
+  async submitTransaction(): Promise<void> {
+    if (!this.form.category_id) return;
+    if (!this.form.amount || this.form.amount <= 0) return;
+
+    this.loading = true;
+
+    const payload = {
+      transactions_id: this.form.transactions_id,
+      user_id: this.form.user_id,
+      category_id: this.form.category_id,
+      amount: Number(this.form.amount),
+      note: this.form.note,
+      transaction_date: this.form.transaction_date
+    };
+
+    const res = await this.transactionService.createTransaction(payload);
+
+    this.loading = false;
+
+    if (res) {
+      await this.loadTransactions();
+      this.closeModal();
+    }
+  }
+
+  async deleteTransaction(id: string): Promise<void> {
+    await this.transactionService.deleteTransaction(id);
+    await this.loadTransactions();
+  }
+
+  resetForm(): void {
+    this.form = {
+      transactions_id: crypto.randomUUID(),
+      user_id: '',
+      category_id: '',
+      amount: 0,
+      note: '',
+      transaction_date: this.today()
+    };
+  }
+
+  today(): string {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  get totalIncome(): number {
+    return this.transactions
+      .filter((item: any) => item.type === 'income')
+      .reduce((sum: number, item: any) => sum + Number(item.amount || 0), 0);
+  }
+
+  get totalExpense(): number {
+    return this.transactions
+      .filter((item: any) => item.type === 'expense')
+      .reduce((sum: number, item: any) => sum + Number(item.amount || 0), 0);
+  }
+
+  get balance(): number {
+    return this.totalIncome - this.totalExpense;
+  }
+
+  get sortedTransactions() {
+    return [...this.transactions].sort(
+      (a: any, b: any) =>
+        new Date(b.transaction_date).getTime() -
+        new Date(a.transaction_date).getTime()
+    );
+  }
+
+  get latestTransactions() {
+    return this.sortedTransactions.slice(0, 2);
+  }
+
+  get latestFiveTransactions() {
+    return this.sortedTransactions.slice(0, 5);
+  }
+
+  formatMoney(value: number): string {
+    return value.toLocaleString('th-TH', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  }
 
   public series: ApexAxisChartSeries = [
     {
@@ -149,13 +304,4 @@ export class HomePageComponent {
     '#22c55e',
     '#ef4444'
   ];
-
-  openModal(type: 'plan' | 'finance-use' | 'list' | 'frog') {
-    this.modalType = type;
-    this.isOpen = true;
-  }
-
-  closeModal() {
-    this.isOpen = false;
-  }
 }

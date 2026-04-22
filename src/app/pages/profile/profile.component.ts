@@ -38,7 +38,7 @@ export class ProfileComponent implements OnInit {
   transaction: TransactionType[] = [];
 
   constructor(
-    private readonly _transactionType: TransactionService,
+    private readonly _transactionService: TransactionService,
     private readonly _categoryService: CategoryService,
   ) {}
 
@@ -55,10 +55,12 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.loadTransactionTypes();
     this.loadCategory();
+
+    this._transactionService.loadTransactions()
   }
 
   async loadTransactionTypes() {
-    const res = await this._transactionType.getType();
+    const res = await this._transactionService.getType();
 
     if (res?.resultData?.transaction_types) {
     this.transaction = res.resultData.transaction_types.sort((a, b) => {

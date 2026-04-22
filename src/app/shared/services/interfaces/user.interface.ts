@@ -12,8 +12,8 @@ export interface User {
 }
 
 export interface UserPayload {
-    full_name: string;
-    email: string;
+    full_name?: string;
+    email?: string;
     money_limit?: number | null;
     latest_money_limit_up?: string | null;
     permission?: string;

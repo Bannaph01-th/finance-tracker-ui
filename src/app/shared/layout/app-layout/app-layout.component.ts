@@ -12,6 +12,7 @@ import { AsyncPipe, NgClass } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { UserService } from "../../services/api/user.service";
 import { UserStateService } from "../../services/api/common/user-stage-service";
+import { User } from "../../services/interfaces/user.interface";
 
 @Component({
   selector: "app-layout",
@@ -37,6 +38,8 @@ export class AppLayoutComponent implements OnInit {
   readonly router = inject(Router);
 
   isOpen = false;
+  userProfile: User | undefined;
+  savingLimit = false;
   financeLimit = 0;
 
   constructor(
@@ -53,11 +56,33 @@ export class AppLayoutComponent implements OnInit {
     this.fetchUserProfile();
   }
 
+  async saveFinanceLimit(): Promise<void> {
+    if (!this.userProfile?.user_id) return;
+
+    this.savingLimit = true;
+
+    const res = await this._userService.patchUserProfile(
+      this.userProfile.user_id,
+      {
+        money_limit: Number(this.financeLimit)
+      }
+    );
+
+    this.savingLimit = false;
+
+    if (res) {
+      await this.fetchUserProfile();
+      this.closeModal();
+    }
+  }
+
   async fetchUserProfile() {
     const res = await this._userService.getUserProfile();
     console.log('user profile: ', res);
     if (res?.resultData) {
       this.userState.setUser(res.resultData);
+      
+      this.financeLimit = Number(res.resultData?.money_limit || 0);
     }
   }
 

@@ -4,7 +4,7 @@ export interface TransactionType {
 }
 
 export interface Transaction {
-  transaction_id: string;
+  transactions_id: string;
   user_id: string;
   category_id: string;
   amount: number;
@@ -12,10 +12,6 @@ export interface Transaction {
   transaction_date: string;
   created_at: string;
   deleted_at: string;
-  category_info: {
-    name: string;
-    type: string;
-  }
 }
 
 export interface TransactionTypeResponse {
