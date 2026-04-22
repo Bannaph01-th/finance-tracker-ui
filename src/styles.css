@@ -867,63 +867,6 @@ pre[class*="language-"].line-numbers {
   padding-left: 2.8em !important;
 }
 
-.flatpickr-calendar {
-  border: 1px solid #e5e7eb !important;
-  border-radius: 16px !important;
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08) !important;
-  padding: 16px !important;
-}
-
-.flatpickr-monthSelect-theme-light {
-  width: 360px !important;
-}
-
-.flatpickr-monthSelect-months {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 10px !important;
-  padding-top: 10px !important;
-}
-
-.flatpickr-monthSelect-month {
-  margin: 0 !important;
-  border-radius: 12px !important;
-  padding: 14px 10px !important;
-  background: #f8fafc !important;
-  color: #374151 !important;
-  font-size: 15px !important;
-  font-weight: 600 !important;
-  transition: all 0.2s ease !important;
-}
-
-.flatpickr-monthSelect-month:hover {
-  background: #eef2ff !important;
-  color: #4f46e5 !important;
-  transform: translateY(-1px);
-}
-
-.flatpickr-monthSelect-month.selected {
-  background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
-  color: white !important;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.18) !important;
-}
-
-.flatpickr-current-month {
-  font-size: 24px !important;
-  font-weight: 800 !important;
-  color: #111827 !important;
-}
-
-.flatpickr-prev-month,
-.flatpickr-next-month {
-  border-radius: 10px !important;
-}
-
-.flatpickr-prev-month:hover,
-.flatpickr-next-month:hover {
-  background: #f3f4f6 !important;
-}
-
 @keyframes bounce-soft {
   0%, 100% {
     transform: scale(1);
@@ -936,4 +879,180 @@ pre[class*="language-"].line-numbers {
 
 .animate-bounce-soft {
   animation: bounce-soft 1.6s ease-in-out infinite;
+}
+
+.flatpickr-calendar {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 18px !important;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08) !important;
+  padding: 16px !important;
+  overflow: hidden !important;
+}
+
+.flatpickr-monthSelect-theme-light {
+  width: 340px !important;
+  max-width: calc(100vw - 24px) !important;
+}
+
+.flatpickr-monthSelect-months {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 12px !important;
+  padding-top: 12px !important;
+}
+
+.flatpickr-monthSelect-month {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  width: 90% !important;
+  height: 50px !important;
+  margin: 0 !important;
+  padding: 10px !important;
+
+  border-radius: 16px !important;
+  box-sizing: border-box !important;
+
+  background: #f8fafc !important;
+  color: #374151 !important;
+
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  text-align: center !important;
+  line-height: 1.25 !important;
+
+  transition: all .18s ease !important;
+}
+
+.flatpickr-monthSelect-month:hover {
+  background: #eef2ff !important;
+  color: #4f46e5 !important;
+}
+
+.flatpickr-monthSelect-month.selected,
+.flatpickr-monthSelect-month.startRange,
+.flatpickr-monthSelect-month.endRange {
+  background: linear-gradient(135deg,#4f46e5,#6366f1) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* .flatpickr-current-month {
+  font-size: 32px !important;
+  font-weight: 800 !important;
+  color: #111827 !important;
+} */
+
+.flatpickr-current-month {
+  position: absolute !important;
+  top: 0 !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: max-content !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+.flatpickr-months {
+  display: grid !important;
+  grid-template-columns: 40px 1fr 40px !important;
+  align-items: center !important;
+  position: relative !important;
+}
+
+.flatpickr-prev-month {
+  grid-column: 1 !important;
+  position: static !important;
+  justify-self: start !important;
+}
+
+.flatpickr-current-month {
+  grid-column: 2 !important;
+  position: static !important;
+  transform: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  text-align: center !important;
+}
+
+.flatpickr-next-month {
+  grid-column: 3 !important;
+  position: static !important;
+  justify-self: end !important;
+}
+
+.flatpickr-prev-month,
+.flatpickr-next-month {
+  border-radius: 10px !important;
+}
+
+.flatpickr-prev-month:hover,
+.flatpickr-next-month:hover {
+  background: #f3f4f6 !important;
+}
+
+html.dark .flatpickr-calendar,
+body.dark .flatpickr-calendar,
+.dark .flatpickr-calendar {
+  background: #0f172a !important;
+  border: 1px solid rgba(148,163,184,.14) !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,.45) !important;
+}
+
+html.dark .flatpickr-months,
+html.dark .flatpickr-weekdays,
+html.dark .flatpickr-innerContainer,
+html.dark .flatpickr-rContainer,
+.dark .flatpickr-months,
+.dark .flatpickr-weekdays,
+.dark .flatpickr-innerContainer,
+.dark .flatpickr-rContainer {
+  background: #0f172a !important;
+}
+
+html.dark .flatpickr-current-month,
+.dark .flatpickr-current-month {
+  color: #f8fafc !important;
+}
+
+html.dark .flatpickr-prev-month,
+html.dark .flatpickr-next-month,
+.dark .flatpickr-prev-month,
+.dark .flatpickr-next-month,
+.dark .flatpickr-wrapper {
+  color: #cbd5e1 !important;
+  fill: #cbd5e1 !important;
+}
+
+html.dark .flatpickr-prev-month:hover,
+html.dark .flatpickr-next-month:hover,
+.dark .flatpickr-prev-month:hover,
+.dark .flatpickr-next-month:hover {
+  background: rgba(255,255,255,.06) !important;
+}
+
+html.dark .flatpickr-monthSelect-month,
+.dark .flatpickr-monthSelect-month {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(148,163,184,.08) !important;
+}
+
+html.dark .flatpickr-monthSelect-month:hover,
+.dark .flatpickr-monthSelect-month:hover {
+  background: #334155 !important;
+  color: #ffffff !important;
+}
+
+html.dark .flatpickr-monthSelect-month.selected,
+html.dark .flatpickr-monthSelect-month.startRange,
+html.dark .flatpickr-monthSelect-month.endRange,
+.dark .flatpickr-monthSelect-month.selected,
+.dark .flatpickr-monthSelect-month.startRange,
+.dark .flatpickr-monthSelect-month.endRange {
+  background: linear-gradient(135deg,#4f46e5,#6366f1) !important;
+  color: #fff !important;
+  border-color: transparent !important;
 }

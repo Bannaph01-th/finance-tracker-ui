@@ -1,157 +1,147 @@
 <div class="rounded-2xl border border-gray-200 bg-white pt-4 dark:border-white/[0.05] dark:bg-white/[0.03]">
-  <div class="flex flex-col gap-2 px-5 mb-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-    <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+
+  <div class="mb-4 flex flex-col gap-3 px-5 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <div class="flex flex-col gap-4 md:flex-row md:items-center">
       <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
         ตารางสรุปรายรับรายจ่ายของคุณ
       </h3>
 
       <button
-        class="rounded-xl bg-brand-500 px-3 py-2 font-medium text-white transition-all duration-300 hover:bg-indigo-700 hover:shadow-md dark:bg-indigo-500 dark:hover:bg-indigo-600"
+        class="rounded-xl bg-brand-500 px-3 py-2 font-medium text-white transition hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
         (click)="openModalEmit()"
       >
         + เพิ่มรายรับ / รายจ่าย
       </button>
     </div>
 
-    <div class="flex flex-col gap-3 sm:flex-row sm:items-center">
-      <div>
-        <app-month-picker
-          id="date-picker"
-          placeholder="เลือกเดือน"
-          [defaultDate]="selectedMonth"
-          (monthChange)="handleMonthChange($event)"
-        />
-      </div>
-    </div>
+    <app-month-picker
+      id="date-picker"
+      placeholder="เลือกเดือน"
+      [defaultDate]="selectedMonth"
+      (monthChange)="handleMonthChange($event)"
+    />
   </div>
 
-  <div
-    class="m-4 overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]"
-  >
+  <div class="m-4 overflow-hidden rounded-2xl border border-gray-200 dark:text-white dark:border-white/[0.05]">
     <div class="max-w-full overflow-x-auto">
+
       <table class="min-w-full border-collapse">
 
-        <!-- HEADER -->
         <thead>
-          <tr class="border-b border-gray-200 dark:border-white/[0.05]">
+          <tr class="border-b border-gray-200 dark:text-white dark:border-white/[0.05]">
 
             <th
               rowspan="2"
-              class="min-w-[140px] border-r border-gray-200 px-4 py-3 text-center text-md font-semibold text-gray-800 dark:border-white/[0.05] dark:text-white"
+              class="min-w-[140px] border-r border-gray-200 px-4 py-3 text-center font-semibold dark:border-white/[0.05] dark:text-white"
             >
               วัน/เดือน/ปี
             </th>
 
             <th
               rowspan="2"
-              class="min-w-[220px] border-r border-gray-200 px-4 py-3 text-center text-md font-semibold text-gray-800 dark:border-white/[0.05] dark:text-white"
+              class="min-w-[220px] border-r border-gray-200 px-4 py-3 text-center font-semibold dark:text-white dark:border-white/[0.05]"
             >
               รายการ
             </th>
 
-            <!-- income -->
             <th
-              [attr.colspan]="incomeCategories.length"
-              class="border-r border-gray-200 px-4 py-3 text-center text-md font-semibold text-gray-800 dark:border-white/[0.05] dark:text-white"
+              [attr.colspan]="incomeCategories.length || 1"
+              class="border-r border-gray-200 px-4 py-3 text-center font-semibold text-green-600 dark:text-white dark:border-white/[0.05]"
             >
-              รายรับ (บาท)
-            </th>
-
-            <!-- expense -->
-            <th
-              [attr.colspan]="expenseCategories.length"
-              class="border-r border-gray-200 px-4 py-3 text-center text-md font-semibold text-gray-800 dark:border-white/[0.05] dark:text-white"
-            >
-              รายจ่าย (บาท)
+              รายรับ
             </th>
 
             <th
-              rowspan="2"
-              class="min-w-[50px] px-4 py-3 text-end text-md font-semibold text-gray-800 dark:text-white"
+              [attr.colspan]="expenseCategories.length || 1"
+              class="border-r border-gray-200 px-4 py-3 text-center font-semibold text-red-500 dark:text-white dark:border-white/[0.05]"
             >
+              รายจ่าย
             </th>
+
           </tr>
 
-          <!-- sub header -->
-          <tr class="border-b border-gray-200 dark:border-white/[0.05]">
+          <tr class="border-b border-gray-200 dark:text-white dark:border-white/[0.05]">
 
-            @for (cat of incomeCategories; track cat) {
-            <th
-              class="border-r border-gray-200 px-4 py-3 text-center text-md font-medium text-gray-700 dark:border-white/[0.05] dark:text-gray-300"
-            >
-              {{ cat }}
-            </th>
+            @if (incomeCategories.length) {
+              @for (cat of incomeCategories; track cat) {
+              <th class="border-r px-4 py-3 text-center dark:text-white dark:border-white/[0.05]">
+                {{ cat }}
+              </th>
+              }
+            } @else {
+              <th class="border-r px-4 py-3 text-center dark:text-white dark:border-white/[0.05]">
+                -
+              </th>
             }
 
-            @for (cat of expenseCategories; track cat) {
-            <th
-              class="border-r border-gray-200 px-4 py-3 text-center text-md font-medium text-gray-700 dark:border-white/[0.05] dark:text-gray-300"
-            >
-              {{ cat }}
-            </th>
+            @if (expenseCategories.length) {
+              @for (cat of expenseCategories; track cat) {
+              <th class="border-r px-4 py-3 text-center dark:text-white dark:border-white/[0.05]">
+                {{ cat }}
+              </th>
+              }
+            } @else {
+              <th class="border-r px-4 py-3 text-center dark:text-white dark:border-white/[0.05]">
+                -
+              </th>
             }
 
           </tr>
         </thead>
 
-        <!-- BODY -->
         <tbody>
 
-          @for (row of groupedRows; track row.date; let i = $index) {
-          <tr
-            class="border-b border-gray-200 dark:border-white/[0.05]"
-            [ngClass]="i % 2 === 0
-              ? 'bg-white dark:bg-transparent'
-              : 'bg-gray-50 dark:bg-white/[0.02]'"
-          >
+          @if (groupedRows.length) {
 
-            <!-- date -->
-            <td
-              class="border-r border-gray-200 px-4 py-3 align-top font-medium whitespace-nowrap text-gray-800 dark:border-white/[0.05] dark:text-white"
+            @for (row of groupedRows; track row.date; let i = $index) {
+            <tr
+              class="border-b border-gray-200 dark:text-white dark:border-white/[0.05]"
+              [ngClass]="i % 2 === 0 ? 'bg-white dark:bg-transparent' : 'bg-gray-50 dark:bg-white/[0.02]'"
             >
-              {{ row.date }}
-            </td>
 
-            <!-- notes -->
-            <td class="px-6 py-4 align-top text-gray-700 dark:text-gray-300">
-              <ul class="list-disc space-y-2 pl-5 marker:text-gray-400 dark:marker:text-gray-500">
-                @for (note of row.notes; track $index) {
-                <li class="leading-relaxed">
-                  {{ note || '-' }}
-                </li>
+              <td class="border-r px-4 py-3 align-top dark:text-white dark:border-white/[0.05]">
+                {{ row.date }}
+              </td>
+
+              <td class="border-r px-4 py-3 align-top dark:text-white dark:border-white/[0.05]">
+                <ul class="list-disc space-y-2 pl-5 marker:text-gray-400 dark:marker:text-gray-500">
+                  @for (note of row.notes; track $index) {
+                  <li class="leading-relaxed">
+                    {{ note || '-' }}
+                  </li>
+                  }
+                </ul>
+              </td>
+
+              @if (incomeCategories.length) {
+                @for (cat of incomeCategories; track cat) {
+                <td class="border-r px-4 py-3 text-center align-top dark:text-white dark:border-white/[0.05]">
+                  @for (amount of row.incomeMap[cat] || []; track $index) {
+                  <div>{{ amount | number:'1.2-2' }}</div>
+                  }
+                </td>
                 }
-              </ul>
-            </td>
+              } @else {
+                <td class="border-r px-4 py-3 text-center dark:text-white dark:border-white/[0.05]">-</td>
+              }
 
-            <!-- income -->
-            @for (cat of incomeCategories; track cat) {
-            <td
-              class="border-r border-gray-200 px-4 py-3 text-center align-top text-gray-800 dark:border-white/[0.05] dark:text-white"
-            >
-              <div class="space-y-1">
-                @for (amount of row.incomeMap[cat] || []; track $index) {
-                <div>{{ amount | number:'1.2-2' }}</div>
+              @if (expenseCategories.length) {
+                @for (cat of expenseCategories; track cat) {
+                <td class="border-r px-4 py-3 text-center align-top dark:text-white dark:border-white/[0.05]">
+                  @for (amount of row.expenseMap[cat] || []; track $index) {
+                  <div>{{ amount | number:'1.2-2' }}</div>
+                  }
+                </td>
                 }
-              </div>
-            </td>
-            }
+              } @else {
+                <td class="border-r px-4 py-3 text-center dark:text-white dark:border-white/[0.05]">-</td>
+              }
 
-            <!-- expense -->
-            @for (cat of expenseCategories; track cat) {
-            <td
-              class="border-r border-gray-200 px-4 py-3 text-center align-top text-gray-800 dark:border-white/[0.05] dark:text-white"
-            >
-              <div class="space-y-1">
-                @for (amount of row.expenseMap[cat] || []; track $index) {
-                <div>{{ amount | number:'1.2-2' }}</div>
-                }
-              </div>
-            </td>
-            }
+              <td class="px-4 py-3 align-top">
+                <div class="relative flex justify-end">
 
-            <td>
-              <div class="relative flex justify-end me-5">
-                <app-table-dropdown>
+                  <app-table-dropdown>
+
                     <div dropdown-button>
                       <button class="text-gray-500 dark:text-gray-400">
                         <svg
@@ -160,70 +150,88 @@
                           height="24"
                           viewBox="0 0 24 24"
                           fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
                             fill-rule="evenodd"
                             clip-rule="evenodd"
                             d="M5.99902 10.245C6.96552 10.245 7.74902 11.0285 7.74902 11.995V12.005C7.74902 12.9715 6.96552 13.755 5.99902 13.755C5.03253 13.755 4.24902 12.9715 4.24902 12.005V11.995C4.24902 11.0285 5.03253 10.245 5.99902 10.245ZM17.999 10.245C18.9655 10.245 19.749 11.0285 19.749 11.995V12.005C19.749 12.9715 18.9655 13.755 17.999 13.755C17.0325 13.755 16.249 12.9715 16.249 12.005V11.995C16.249 11.0285 17.0325 10.245 17.999 10.245ZM13.749 11.995C13.749 11.0285 12.9655 10.245 11.999 10.245C11.0325 10.245 10.249 11.0285 10.249 11.995V12.005C10.249 12.9715 11.0325 13.755 11.999 13.755C12.9655 13.755 13.749 12.9715 13.749 12.005V11.995Z"
-                            fill=""
                           />
                         </svg>
                       </button>
                     </div>
+
                     <div dropdown-content>
                       <button
-                        class="text-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                        class="flex w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
                       >
                         View More
                       </button>
+
                       <button
-                        class="text-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                        class="flex w-full rounded-lg px-3 py-2 text-left text-xs font-medium text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10"
                       >
                         Delete
                       </button>
                     </div>
+
                   </app-table-dropdown>
-              </div>
-            </td>
-          </tr>
+
+                </div>
+              </td>
+
+            </tr>
+            }
+
+          } @else {
+
+            <tr>
+              <td
+                colspan="99"
+                class="px-4 py-8 text-center text-gray-500 dark:text-gray-400"
+              >
+                ยังไม่มีรายการในเดือนนี้
+              </td>
+            </tr>
+
           }
 
-          <!-- TOTAL -->
+          @if (groupedRows.length) {
           <tr class="bg-gray-100 font-semibold dark:bg-white/[0.02]">
 
-            <td
-              colspan="2"
-              class="border-r border-gray-200 px-4 py-3 text-green-600 dark:border-white/[0.05] dark:text-green-400"
-            >
+            <td colspan="2" class="border-r px-4 py-3 text-green-600 dark:text-green-400 dark:border-white/[0.05]">
               รวม
             </td>
 
-            <!-- income total -->
-            @for (cat of incomeCategories; track cat) {
-            <td
-              class="border-r border-gray-200 px-4 py-3 text-center text-green-600 dark:border-white/[0.05] dark:text-green-400"
-            >
-              {{ getTotalIncome(cat) | number:'1.2-2' }} บาท
-            </td>
+            @if (incomeCategories.length) {
+              @for (cat of incomeCategories; track cat) {
+              <td class="border-r px-4 py-3 text-center text-green-600 dark:text-green-400 dark:border-white/[0.05]">
+                {{ getTotalIncome(cat) | number:'1.2-2' }}
+              </td>
+              }
+            } @else {
+              <td class="border-r px-4 py-3 text-center dark:text-white dark:border-white/[0.05]">-</td>
             }
 
-            <!-- expense total -->
-            @for (cat of expenseCategories; track cat) {
-            <td
-              class="border-r border-gray-200 px-4 py-3 text-center text-red-500 dark:border-white/[0.05] dark:text-red-400"
-            >
-              {{ getTotalExpense(cat) | number:'1.2-2' }} บาท
-            </td>
+            @if (expenseCategories.length) {
+              @for (cat of expenseCategories; track cat) {
+              <td class="border-r px-4 py-3 text-center text-red-500 dark:text-red-400 dark:border-white/[0.05]">
+                {{ getTotalExpense(cat) | number:'1.2-2' }}
+              </td>
+              }
+            } @else {
+              <td class="border-r px-4 py-3 text-center dark:text-white dark:border-white/[0.05]">-</td>
             }
-
-            <td class="px-4 py-3"></td>
+            
+            <td class="border-r px-4 py-3 text-center dark:text-white dark:border-white/[0.05]"></td>
 
           </tr>
+          }
 
         </tbody>
+
       </table>
+
     </div>
   </div>
-  
+
 </div>

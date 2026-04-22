@@ -3,7 +3,7 @@
 <div class="space-y-6">
   <!-- Table -->
   <div class="mt-4">
-    <app-finance-table (openModal)="openModal()" />
+    <app-finance-table #financeTable (openModal)="openModal()" />
   </div>
 
   <app-modal
@@ -21,39 +21,56 @@
       </p>
 
       <div class="mt-6 grid gap-4">
-        <input
-          type="text"
-          placeholder="ชื่อรายการ"
+        <select
+          [(ngModel)]="form.category_id"
           class="h-11 rounded-lg border px-4"
-        />
+        >
+          <option value="">เลือกหมวดหมู่</option>
+
+          <optgroup label="รายรับ">
+            @for (item of incomeCategories; track item.category_id) {
+              <option [value]="item.category_id">
+                {{ item.name }}
+              </option>
+            }
+          </optgroup>
+
+          <optgroup label="รายจ่าย">
+            @for (item of expenseCategories; track item.category_id) {
+              <option [value]="item.category_id">
+                {{ item.name }}
+              </option>
+            }
+          </optgroup>
+        </select>
 
         <input
           type="number"
           placeholder="จำนวนเงิน"
+          [(ngModel)]="form.amount"
           class="h-11 rounded-lg border px-4"
         />
 
-        <select class="h-11 rounded-lg border px-4">
-          <option>รายรับ</option>
-          <option>รายจ่าย</option>
-        </select>
-
-        <select class="h-11 rounded-lg border px-4">
-          <option>ขายหน้าร้าน</option>
-          <option>ขายหน้าบ้าน</option>
-        </select>
+        <input
+          type="date"
+          [(ngModel)]="form.transaction_date"
+          class="h-11 rounded-lg border px-4"
+        />
 
         <input
           type="text"
           placeholder="หมายเหตุ"
+          [(ngModel)]="form.note"
           class="h-11 rounded-lg border px-4"
         />
       </div>
 
       <button
-        class="mt-6 w-full rounded-xl bg-brand-500 py-3 font-medium text-white"
+        (click)="submitTransaction()"
+        [disabled]="loading"
+        class="mt-6 w-full rounded-xl bg-brand-500 py-3 font-medium text-white disabled:opacity-50"
       >
-        บันทึก
+        {{ loading ? 'กำลังบันทึก...' : 'บันทึก' }}
       </button>
     </div>
   </app-modal>

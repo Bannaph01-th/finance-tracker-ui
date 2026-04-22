@@ -13,7 +13,12 @@ import {
 export class TransactionService {
 
     async loadTransactions(params?: {
-
+        user_id?: string;
+        category_id?: string;
+        amount?: number;
+        note?: string;
+        transaction_date?: string;
+        year_month?: string;
     }): Promise<TransactionResponse | null> {
         try{
             const res: AxiosResponse<TransactionResponse> = 

@@ -23,6 +23,7 @@ import { Category } from '../../shared/services/interfaces/category.interface';
 import { Transaction } from '../../shared/services/interfaces/transaction.interface';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { UserService } from '../../shared/services/api/user.service';
+import { DashboardService } from '../../shared/services/api/dashboard.service';
 
 @Component({
   selector: 'app-home-page',
@@ -42,7 +43,8 @@ export class HomePageComponent implements OnInit {
   constructor(
     private transactionService: TransactionService,
     private categoryService: CategoryService,
-    private userService: UserService
+    private userService: UserService,
+    private dashboardService: DashboardService,
   ) {}
 
   isOpen = false;
@@ -67,13 +69,23 @@ export class HomePageComponent implements OnInit {
     transaction_date: ''
   };
 
+  dashboardSummary: any = {
+    balance: 0,
+    money_limit: 0,
+    income_this_month: 0,
+    expense_this_month: 0,
+    months: [],
+    monthly_summary: []
+  };
+
   async ngOnInit(): Promise<void> {
     this.resetForm();
 
     await Promise.all([
       this.loadCategories(),
       this.loadTransactions(),
-      this.loadProfile()
+      this.loadProfile(),
+      this.loadDashboardSummary()
     ]);
   }
 
@@ -101,6 +113,26 @@ export class HomePageComponent implements OnInit {
     this.userProfile = res?.resultData ?? null;
 
     this.financeLimit = Number(this.userProfile?.money_limit || 0);
+  }
+
+  async loadDashboardSummary(): Promise<void> {
+    const res = await this.dashboardService.loadDashboardFinanceSummary();
+
+    const data =
+      res?.resultData ??
+      res?.data ??
+      {};
+
+    this.dashboardSummary = data;
+
+    this.financeLimit = Number(data.money_limit || 0);
+
+    this.series = data.monthly_summary ?? [];
+
+    this.xaxis = {
+      ...this.xaxis,
+      categories: data.months ?? []
+    };
   }
 
   async saveFinanceLimit(): Promise<void> {
@@ -140,13 +172,42 @@ export class HomePageComponent implements OnInit {
     if (!this.form.category_id) return;
     if (!this.form.amount || this.form.amount <= 0) return;
 
+    const amount = Number(this.form.amount);
+
+    const category = this.categories.find(
+      (item: any) => item.category_id === this.form.category_id
+    );
+
+    const typeId = Number(category?.type_id);
+
+    if (typeId === 2 && this.financeLimit > 0) {
+      const nextExpense =
+        Number(this.dashboardSummary.expense_this_month || 0) + amount;
+
+      if (nextExpense > this.financeLimit) {
+        alert('รายจ่ายรายการนี้เกินวงเงินที่ตั้งไว้');
+        return;
+      }
+
+      if (nextExpense >= this.financeLimit * 0.9) {
+        alert('คำเตือน: รายจ่ายใกล้เต็มวงเงินแล้ว');
+      }
+    }
+
+    if (typeId === 1 && this.financeLimit > 0) {
+      if (amount > this.financeLimit * 3) {
+        alert('รายรับรายการนี้สูงผิดปกติ กรุณาตรวจสอบจำนวนเงิน');
+        return;
+      }
+    }
+
     this.loading = true;
 
     const payload = {
       transactions_id: this.form.transactions_id,
       user_id: this.form.user_id,
       category_id: this.form.category_id,
-      amount: Number(this.form.amount),
+      amount,
       note: this.form.note,
       transaction_date: this.form.transaction_date
     };
@@ -156,7 +217,11 @@ export class HomePageComponent implements OnInit {
     this.loading = false;
 
     if (res) {
-      await this.loadTransactions();
+      await Promise.all([
+        this.loadTransactions(),
+        this.loadDashboardSummary()
+      ]);
+
       this.closeModal();
     }
   }
