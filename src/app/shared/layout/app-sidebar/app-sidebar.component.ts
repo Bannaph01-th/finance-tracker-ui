@@ -1,10 +1,17 @@
-import { CommonModule } from '@angular/common';
-import { Component, ElementRef, QueryList, ViewChildren, ChangeDetectorRef } from '@angular/core';
-import { SidebarService } from '../../services/sidebar.service';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { SafeHtmlPipe } from '../../pipe/safe-html.pipe';
-import { SidebarWidgetComponent } from './app-sidebar-widget.component';
-import { combineLatest, Subscription } from 'rxjs';
+import { CommonModule } from "@angular/common";
+import {
+  Component,
+  ElementRef,
+  QueryList,
+  ViewChildren,
+  ChangeDetectorRef,
+} from "@angular/core";
+import { SidebarService } from "../../services/sidebar.service";
+import { NavigationEnd, Router, RouterModule } from "@angular/router";
+import { SafeHtmlPipe } from "../../pipe/safe-html.pipe";
+import { SidebarWidgetComponent } from "./app-sidebar-widget.component";
+import { combineLatest, Subscription } from "rxjs";
+import { UserStateService } from "../../services/api/common/user-stage-service";
 
 type NavItem = {
   name: string;
@@ -15,17 +22,16 @@ type NavItem = {
 };
 
 @Component({
-  selector: 'app-sidebar',
+  selector: "app-sidebar",
   imports: [
     CommonModule,
     RouterModule,
     SafeHtmlPipe,
     // SidebarWidgetComponent
   ],
-  templateUrl: './app-sidebar.component.html',
+  templateUrl: "./app-sidebar.component.html",
 })
 export class AppSidebarComponent {
-
   // Main nav items
   navItems: NavItem[] = [
     {
@@ -135,18 +141,21 @@ export class AppSidebarComponent {
 
   openSubmenu: string | null | number = null;
   subMenuHeights: { [key: string]: number } = {};
-  @ViewChildren('subMenu') subMenuRefs!: QueryList<ElementRef>;
+  @ViewChildren("subMenu") subMenuRefs!: QueryList<ElementRef>;
 
   readonly isExpanded$;
   readonly isMobileOpen$;
   readonly isHovered$;
 
+  isAdmin = false;
+  
   private subscription: Subscription = new Subscription();
 
   constructor(
     public sidebarService: SidebarService,
+    private userState: UserStateService,
     private router: Router,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {
     this.isExpanded$ = this.sidebarService.isExpanded$;
     this.isMobileOpen$ = this.sidebarService.isMobileOpen$;
@@ -154,31 +163,37 @@ export class AppSidebarComponent {
   }
 
   ngOnInit() {
+    this.userState.user$.subscribe((user) => {
+      const permission = user?.permission ?? "";
+      this.isAdmin = permission === "ADMIN";
+    });
     // Subscribe to router events
     this.subscription.add(
-      this.router.events.subscribe(event => {
+      this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd) {
           this.setActiveMenuFromRoute(this.router.url);
         }
-      })
+      }),
     );
 
     // Subscribe to combined observables to close submenus when all are false
     this.subscription.add(
-      combineLatest([this.isExpanded$, this.isMobileOpen$, this.isHovered$]).subscribe(
-        ([isExpanded, isMobileOpen, isHovered]) => {
-          if (!isExpanded && !isMobileOpen && !isHovered) {
-            // this.openSubmenu = null;
-            // this.savedSubMenuHeights = { ...this.subMenuHeights };
-            // this.subMenuHeights = {};
-            this.cdr.detectChanges();
-          } else {
-            // Restore saved heights when reopening
-            // this.subMenuHeights = { ...this.savedSubMenuHeights };
-            // this.cdr.detectChanges();
-          }
+      combineLatest([
+        this.isExpanded$,
+        this.isMobileOpen$,
+        this.isHovered$,
+      ]).subscribe(([isExpanded, isMobileOpen, isHovered]) => {
+        if (!isExpanded && !isMobileOpen && !isHovered) {
+          // this.openSubmenu = null;
+          // this.savedSubMenuHeights = { ...this.subMenuHeights };
+          // this.subMenuHeights = {};
+          this.cdr.detectChanges();
+        } else {
+          // Restore saved heights when reopening
+          // this.subMenuHeights = { ...this.savedSubMenuHeights };
+          // this.cdr.detectChanges();
         }
-      )
+      }),
     );
 
     // Initial load
@@ -214,23 +229,25 @@ export class AppSidebarComponent {
   }
 
   onSidebarMouseEnter() {
-    this.isExpanded$.subscribe(expanded => {
-      if (!expanded) {
-        this.sidebarService.setHovered(true);
-      }
-    }).unsubscribe();
+    this.isExpanded$
+      .subscribe((expanded) => {
+        if (!expanded) {
+          this.sidebarService.setHovered(true);
+        }
+      })
+      .unsubscribe();
   }
 
   private setActiveMenuFromRoute(currentUrl: string) {
     const menuGroups = [
-      { items: this.navItems, prefix: 'main' },
-      { items: this.othersItems, prefix: 'others' },
+      { items: this.navItems, prefix: "main" },
+      { items: this.othersItems, prefix: "others" },
     ];
 
-    menuGroups.forEach(group => {
+    menuGroups.forEach((group) => {
       group.items.forEach((nav, i) => {
         if (nav.subItems) {
-          nav.subItems.forEach(subItem => {
+          nav.subItems.forEach((subItem) => {
             if (currentUrl === subItem.path) {
               const key = `${group.prefix}-${i}`;
               this.openSubmenu = key;
@@ -250,13 +267,13 @@ export class AppSidebarComponent {
   }
 
   onSubmenuClick() {
-    console.log('click submenu');
-    this.isMobileOpen$.subscribe(isMobile => {
-      if (isMobile) {
-        this.sidebarService.setMobileOpen(false);
-      }
-    }).unsubscribe();
-  }  
-
-  
+    console.log("click submenu");
+    this.isMobileOpen$
+      .subscribe((isMobile) => {
+        if (isMobile) {
+          this.sidebarService.setMobileOpen(false);
+        }
+      })
+      .unsubscribe();
+  }
 }
