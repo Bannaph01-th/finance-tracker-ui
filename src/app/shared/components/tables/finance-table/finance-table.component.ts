@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransactionService } from '../../../services/api/transactions.service';
 import { MonthPickerComponent } from '../../form/month-picker/month-picker.component';
-import { TableDropdownComponent } from '../../common/table-dropdown/table-dropdown.component';
+import { ModalComponent } from '../../ui/modal/modal.component';
 
 @Component({
   selector: 'app-finance-table',
@@ -11,8 +11,8 @@ import { TableDropdownComponent } from '../../common/table-dropdown/table-dropdo
   imports: [
     CommonModule, 
     FormsModule,
+    ModalComponent,
     MonthPickerComponent,
-    TableDropdownComponent
   ],
   templateUrl: './finance-table.component.html',
 })
@@ -24,6 +24,10 @@ export class FinanceTableComponent {
 
   @Output() openModal = new EventEmitter<void>();
 
+  isOpenDelete = false;
+  deleteRows: any[] = [];
+  deleting = false;
+
   selectedMonth = this.getCurrentMonth();
 
   transactions: any[] = [];
@@ -34,6 +38,26 @@ export class FinanceTableComponent {
 
   async ngOnInit(): Promise<void> {
     await this.loadTransactions();
+  }
+
+  get totalIncomeAll(): number {
+    return this.transactions
+      .filter((x: any) => x.category_info?.type === 'income')
+      .reduce((sum: number, x: any) => sum + Number(x.amount || 0), 0);
+  }
+
+  get totalExpenseAll(): number {
+    return this.transactions
+      .filter((x: any) => x.category_info?.type === 'expense')
+      .reduce((sum: number, x: any) => sum + Number(x.amount || 0), 0);
+  }
+
+  get netTotal(): number {
+    return this.totalIncomeAll - this.totalExpenseAll;
+  }
+
+  get absNetTotal(): number {
+    return Math.abs(this.netTotal);
   }
 
   async handleMonthChange(event: {
@@ -84,26 +108,19 @@ export class FinanceTableComponent {
       if (!map.has(date)) {
         map.set(date, {
           date,
-          notes: [],
-          incomeMap: {},
-          expenseMap: {}
+          rows: []
         });
       }
 
       const row = map.get(date);
-      const cat = item.category_info?.name || '-';
-      const type = item.category_info?.type;
-      const amount = Number(item.amount || 0);
 
-      row.notes.push(item.note || '-');
-
-      if (type === 'income') {
-        row.incomeMap[cat] ??= [];
-        row.incomeMap[cat].push(amount);
-      } else {
-        row.expenseMap[cat] ??= [];
-        row.expenseMap[cat].push(amount);
-      }
+      row.rows.push({
+        note: item.note || '-',
+        category: item.category_info?.name || '-',
+        type: item.category_info?.type,
+        amount: Number(item.amount || 0),
+        transaction_id: item.transaction_id
+      });
     }
 
     this.groupedRows = Array.from(map.values()).sort(
@@ -158,6 +175,52 @@ export class FinanceTableComponent {
     const year = d.getFullYear();
 
     return `${day}/${month}/${year}`;
+  }
+
+  openDeleteModal(group: any): void {
+    this.deleteRows = [...group.rows].map((x: any) => ({
+      transaction_id: x.transaction_id,
+      amount: x.amount,
+      note: x.note,
+      transaction_date: this.toISODate(group.date),
+      category_info: {
+        name: x.category,
+        type: x.type
+      }
+    }));
+
+    this.isOpenDelete = true;
+  }
+
+  toISODate(date: string): string {
+    const [day, month, year] = date.split('/');
+
+    return `${year}-${month}-${day}`;
+  }
+
+  closeDeleteModal(): void {
+    this.isOpenDelete = false;
+    this.deleteRows = [];
+  }
+
+  async deleteTransaction(item: any): Promise<void> {
+    const ok = confirm(
+      `ต้องการลบรายการ ${item.category_info?.name} (${item.note || '-'}) จำนวน ${Number(item.amount).toLocaleString()} บาท ใช่ไหม`
+    );
+
+    if (!ok) return;
+
+    this.deleting = true;
+
+    await this.transactionService.deleteTransaction(
+      item.transaction_id
+    );
+
+    this.deleting = false;
+
+    this.closeDeleteModal();
+
+    await this.loadTransactions();
   }
 
 }
