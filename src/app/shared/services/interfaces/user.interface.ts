@@ -11,12 +11,26 @@ export interface User {
   latest_money_limit_up?: string | null;
 }
 
+export interface AllUser {
+  page: number;
+  users: User[];
+  total_pages: number;
+  total_items: number;
+  page_size: number;
+}
+
 export interface UserPayload {
     full_name?: string;
     email?: string;
     money_limit?: number | null;
     latest_money_limit_up?: string | null;
     permission?: string;
+}
+
+export interface AllUserResponse{
+    status?:string
+    message?:string
+    resultData?:AllUser;
 }
 
 export interface UserResponse {
