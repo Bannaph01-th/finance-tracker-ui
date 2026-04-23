@@ -8,6 +8,8 @@ import { UserService } from "../../../../services/api/user.service";
 import { LabelComponent } from "../../../form/label/label.component";
 import { InputFieldComponent } from "../../../form/input/input-field.component";
 import { FormsModule } from "@angular/forms";
+import { ModalComponent } from "../../../ui/modal/modal.component";
+import { RedirectCommand, ɵEmptyOutletComponent } from "@angular/router";
 
 @Component({
   selector: "app-basic-table-three",
@@ -19,14 +21,19 @@ import { FormsModule } from "@angular/forms";
     LabelComponent,
     FormsModule,
     InputFieldComponent,
-  ],
+    ModalComponent,
+    ɵEmptyOutletComponent
+],
   templateUrl: "./basic-table-three.component.html",
   styles: ``,
 })
 export class BasicTableThreeComponent implements OnInit {
   User: User[] = [];
 
+  isOpen = false;
+
   isloading = false;
+  onUserDelete = '';
 
   searchName = "";
   searchEmail = "";
@@ -76,4 +83,37 @@ export class BasicTableThreeComponent implements OnInit {
     if (page < 1 || page > this.totalPages) return;
     this.getuser(page);
   }
+
+  async confirmDelete(){
+    if(this.onUserDelete === null) {
+      console.log("no have user")
+      this.onUserDelete = '';
+      return
+    }
+
+    try{
+      const res = await this.userService.deleteUser(this.onUserDelete)
+      
+      if(!res?.status){
+        console.log("cant delete user")
+        return
+      }
+
+      this.onUserDelete = ''
+      this.isOpen = false
+      this.getuser()
+    }catch(e:any){
+      console.log(e)
+    }
+  }
+
+  onOpen(userId:string){
+    this.onUserDelete = userId
+    this.isOpen= true;
+  }
+
+  closeModal(){
+    this.isOpen= false;
+  }
+
 }
