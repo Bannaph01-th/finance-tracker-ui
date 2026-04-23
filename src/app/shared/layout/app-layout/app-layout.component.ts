@@ -54,34 +54,39 @@ export class AppLayoutComponent implements OnInit {
 
   ngOnInit() {
     this.fetchUserProfile();
+
+    this.userState.user$.subscribe((user) => {
+      this.userProfile = user ?? undefined;
+    });
   }
 
   async saveFinanceLimit(): Promise<void> {
     if (!this.userProfile?.user_id) return;
 
     this.savingLimit = true;
-
+    
     const res = await this._userService.patchUserProfile(
       this.userProfile.user_id,
       {
-        money_limit: Number(this.financeLimit)
-      }
+        money_limit: Number(this.financeLimit),
+      },
     );
-
+    
     this.savingLimit = false;
-
+    
     if (res) {
       await this.fetchUserProfile();
       this.closeModal();
     }
+    this.financeLimit = 0;
   }
 
   async fetchUserProfile() {
     const res = await this._userService.getUserProfile();
-    console.log('user profile: ', res);
+    console.log("user profile: ", res);
     if (res?.resultData) {
       this.userState.setUser(res.resultData);
-      
+
       this.financeLimit = Number(res.resultData?.money_limit || 0);
     }
   }

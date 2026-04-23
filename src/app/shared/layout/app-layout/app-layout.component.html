@@ -9,7 +9,7 @@
     [ngClass]="{
       'xl:ml-[290px]': (isExpanded$ | async) || (isHovered$ | async),
       'xl:ml-[90px]': !(isExpanded$ | async) && !(isHovered$ | async),
-      'ml-0': (isMobileOpen$ | async)
+      'ml-0': (isMobileOpen$ | async),
     }"
   >
     <app-header />
@@ -17,7 +17,7 @@
     <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
       <router-outlet></router-outlet>
 
-      @if (router.url === '/' || router.url === '/dashboard') {
+      @if (router.url === "/" || router.url === "/dashboard") {
         <div
           class="rounded-3xl bg-gradient-to-br from-brand-500 to-brand-600 p-8 text-white shadow-xl"
         >
@@ -52,7 +52,9 @@
               routerLink="/finance-table"
             >
               <div class="text-sm opacity-80">ดูรายรับรายจ่ายของคุณ</div>
-              <div class="mt-2 text-xl font-semibold">Income & Expense Table</div>
+              <div class="mt-2 text-xl font-semibold">
+                Income & Expense Table
+              </div>
             </div>
           </div>
 
@@ -69,7 +71,7 @@
     (close)="closeModal()"
     className="max-w-[700px] p-6 lg:p-10"
   >
-    <div class="flex flex-col px-2 overflow-y-auto custom-scrollbar">
+    <div>
       <h5 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white">
         วางแผนการเงินของคุณ
       </h5>
@@ -93,9 +95,9 @@
       <button
         (click)="saveFinanceLimit()"
         [disabled]="savingLimit"
-        class="mt-6 w-full rounded-xl bg-brand-500 py-3 font-medium text-white disabled:opacity-50"
+        class="mt-6 w-full rounded-xl bg-brand-500 hover:bg-brand-400 transition py-3 font-medium text-white disabled:opacity-50"
       >
-        {{ savingLimit ? 'กำลังบันทึก...' : 'บันทึก' }}
+        {{ savingLimit ? "กำลังบันทึก..." : "บันทึก" }}
       </button>
     </div>
   </app-modal>
