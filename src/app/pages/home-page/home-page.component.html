@@ -1,12 +1,9 @@
 <app-page-breadcrumb pageTitle="บันทึกรายรับรายจ่าย" />
 <!-- <div class="space-y-6"> -->
 <div class="p-4 md:p-2">
-
   <div class="grid grid-cols-1 gap-6 xl:grid-cols-12">
-
     <!-- LEFT -->
     <div class="space-y-6 xl:col-span-5">
-
       <!-- Wallet Card -->
       <div
         class="rounded-3xl bg-gradient-to-br from-brand-500 to-brand-600 p-6 text-white shadow-xl"
@@ -16,7 +13,7 @@
 
           <!-- Frog -->
           <div class="relative inline-block group">
-            <div 
+            <div
               class="cursor-pointer text-2xl leading-none animate-bounce-soft"
               (click)="openModal('frog')"
             >
@@ -38,7 +35,7 @@
         <div class="mt-6 text-sm opacity-80">ยอดคงเหลือ</div>
 
         <div class="mt-2 text-5xl font-bold">
-          ฿ {{ dashboardSummary.balance | number:'1.2-2' }}
+          ฿ {{ dashboardSummary.balance | number: "1.2-2" }}
         </div>
 
         <div class="mt-6 h-3 rounded-full bg-white/20">
@@ -48,9 +45,11 @@
             [class.bg-red-400]="dashboardSummary.balance < 0"
             [style.width.%]="
               financeLimit > 0
-                ? ((dashboardSummary.expense_this_month / financeLimit) * 100) > 100
+                ? (dashboardSummary.expense_this_month / financeLimit) * 100 >
+                  100
                   ? 100
-                  : ((dashboardSummary.expense_this_month / financeLimit) * 100 | number:'1.0-0')
+                  : ((dashboardSummary.expense_this_month / financeLimit) * 100
+                    | number: '1.0-0')
                 : 0
             "
           ></div>
@@ -95,7 +94,6 @@
 
       <!-- Quick Stats -->
       <div class="grid grid-cols-2 gap-4">
-
         <!-- Income -->
         <div
           class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900"
@@ -104,8 +102,10 @@
             รายรับเดือนนี้
           </div>
 
-          <div class="mt-2 text-2xl font-bold text-green-600 dark:text-green-400">
-            ฿ {{ dashboardSummary.income_this_month | number:'1.2-2' }}
+          <div
+            class="mt-2 text-2xl font-bold text-green-600 dark:text-green-400"
+          >
+            ฿ {{ dashboardSummary.income_this_month | number: "1.2-2" }}
           </div>
         </div>
 
@@ -118,17 +118,18 @@
           </div>
 
           <div class="mt-2 text-2xl font-bold text-red-500 dark:text-red-400">
-            ฿ {{ dashboardSummary.expense_this_month | number:'1.2-2' }}
+            ฿ {{ dashboardSummary.expense_this_month | number: "1.2-2" }}
           </div>
         </div>
-
       </div>
 
       <!-- Quick Add -->
       <div
         class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900"
       >
-        <div class="mb-4 text-lg font-semibold text-gray-800 dark:text-white p-3">
+        <div
+          class="mb-4 text-lg font-semibold text-gray-800 dark:text-white p-3"
+        >
           เพิ่มรายการรายรับรายจ่าย
         </div>
 
@@ -139,12 +140,10 @@
           + เพิ่มรายรับ / รายจ่าย
         </button>
       </div>
-
     </div>
 
     <!-- RIGHT -->
     <div class="space-y-6 xl:col-span-7">
-
       <!-- Chart -->
       <div
         class="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-700 dark:bg-gray-900"
@@ -155,9 +154,20 @@
 
         <div class="max-w-full overflow-x-auto custom-scrollbar">
           <div class="-ml-5 min-w-[650px] xl:min-w-full pl-2">
-            <apx-chart [series]="series" [chart]="chart" [xaxis]="xaxis" [plotOptions]="plotOptions" [dataLabels]="dataLabels"
-              [stroke]="stroke" [legend]="legend" [yaxis]="yaxis" [grid]="grid" [fill]="fill" [tooltip]="tooltip"
-              [colors]="colors"></apx-chart>
+            <apx-chart
+              [series]="series"
+              [chart]="chart"
+              [xaxis]="xaxis"
+              [plotOptions]="plotOptions"
+              [dataLabels]="dataLabels"
+              [stroke]="stroke"
+              [legend]="legend"
+              [yaxis]="yaxis"
+              [grid]="grid"
+              [fill]="fill"
+              [tooltip]="tooltip"
+              [colors]="colors"
+            ></apx-chart>
           </div>
         </div>
       </div>
@@ -181,55 +191,58 @@
 
         <!-- รายการล่าสุด -->
         <div class="space-y-3">
-
           @if (latestTransactions.length) {
-
             @for (item of latestTransactions; track item.transaction_id) {
-            <div
-              class="flex items-center justify-between rounded-xl px-4 py-3"
-              [class.bg-green-50]="item.category_info!.type === 'income'"
-              [class.dark:bg-green-500/10]="item.category_info!.type === 'income'"
-              [class.bg-red-50]="item.category_info!.type !== 'income'"
-              [class.dark:bg-red-500/10]="item.category_info!.type !== 'income'"
-            >
-              <div>
-                <div class="font-medium text-md text-gray-800 dark:text-white">
-                  {{ item.category_info!.name }} <span class="font-normal">({{ item.note }})</span>
-                </div>
-
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ item.transaction_date | date:'dd/MM/yyyy' }}
-                </div>
-              </div>
-
               <div
-                class="font-semibold"
-                [class.text-green-600]="item.category_info!.type === 'income'"
-                [class.dark:text-green-400]="item.category_info!.type === 'income'"
-                [class.text-red-500]="item.category_info!.type !== 'income'"
-                [class.dark:text-red-400]="item.category_info!.type !== 'income'"
+                class="flex items-center justify-between rounded-xl px-4 py-3"
+                [class.bg-green-50]="item.category_info!.type === 'income'"
+                [class.dark:bg-green-500/10]="
+                  item.category_info!.type === 'income'
+                "
+                [class.bg-red-50]="item.category_info!.type !== 'income'"
+                [class.dark:bg-red-500/10]="
+                  item.category_info!.type !== 'income'
+                "
               >
-                {{ item.category_info!.type === 'income' ? '+' : '-' }}
-                ฿{{ item.amount | number:'1.2-2' }}
+                <div>
+                  <div
+                    class="font-medium text-md text-gray-800 dark:text-white"
+                  >
+                    {{ item.category_info!.name }}
+                    <span class="font-normal">({{ item.note }})</span>
+                  </div>
+
+                  <div class="text-sm text-gray-500 dark:text-gray-400">
+                    {{ item.transaction_date | date: "dd/MM/yyyy" }}
+                  </div>
+                </div>
+
+                <div
+                  class="font-semibold"
+                  [class.text-green-600]="item.category_info!.type === 'income'"
+                  [class.dark:text-green-400]="
+                    item.category_info!.type === 'income'
+                  "
+                  [class.text-red-500]="item.category_info!.type !== 'income'"
+                  [class.dark:text-red-400]="
+                    item.category_info!.type !== 'income'
+                  "
+                >
+                  {{ item.category_info!.type === "income" ? "+" : "-" }}
+                  ฿{{ item.amount | number: "1.2-2" }}
+                </div>
               </div>
-            </div>
             }
-
           } @else {
-
             <div
               class="rounded-xl bg-gray-50 px-4 py-6 text-center text-sm text-gray-500 dark:bg-gray-800 dark:text-gray-400"
             >
               ยังไม่มีรายการ
             </div>
-
           }
-
         </div>
       </div>
-
     </div>
-
   </div>
 
   <app-modal
@@ -238,8 +251,7 @@
     className="max-w-[700px] p-6 lg:p-10"
   >
     <div class="max-h-[80vh] overflow-y-auto px-2">
-
-      @if (modalType === 'plan') {
+      @if (modalType === "plan") {
         <div>
           <h5 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white">
             วางแผนการเงินของคุณ
@@ -266,12 +278,12 @@
             [disabled]="savingLimit"
             class="mt-6 w-full rounded-xl bg-brand-500 py-3 font-medium text-white disabled:opacity-50"
           >
-            {{ savingLimit ? 'กำลังบันทึก...' : 'บันทึก' }}
+            {{ savingLimit ? "กำลังบันทึก..." : "บันทึก" }}
           </button>
         </div>
       }
 
-      @if (modalType === 'finance-use') {
+      @if (modalType === "finance-use") {
         <div>
           <h5 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white">
             เพิ่มรายรับ / รายจ่าย
@@ -331,104 +343,134 @@
             [disabled]="loading"
             class="mt-6 w-full rounded-xl bg-brand-500 py-3 font-medium text-white disabled:opacity-50"
           >
-            {{ loading ? 'กำลังบันทึก...' : 'บันทึก' }}
+            {{ loading ? "กำลังบันทึก..." : "บันทึก" }}
           </button>
         </div>
       }
 
-      @if (modalType === 'list') {
+      @if (modalType === "list") {
         <div>
           <h5 class="mb-2 text-2xl font-semibold text-gray-800 dark:text-white">
             รายการทั้งหมด
           </h5>
 
           <p class="text-sm text-gray-500 dark:text-gray-400">
-            ดูประวัติรายการรายรับรายจ่ายย้อนหลัง 5 รายการ
-            หากต้องการดูทั้งเดือน <a href="/finance-table" class="underline cursor-pointer text-red-500 font-bold">กดที่นี่</a>
+            ดูประวัติรายการรายรับรายจ่ายย้อนหลัง 5 รายการ หากต้องการดูทั้งเดือน
+            <a
+              href="/finance-table"
+              class="underline cursor-pointer text-red-500 font-bold"
+              >กดที่นี่</a
+            >
           </p>
 
           <div class="space-y-3 mt-4">
-
             @for (item of latestFiveTransactions; track item.transaction_id) {
-            <div
-              class="flex items-center justify-between rounded-xl px-4 py-3"
-              [class.bg-green-50]="item.category_info!.type === 'income'"
-              [class.dark:bg-green-500/10]="item.category_info!.type === 'income'"
-              [class.bg-red-50]="item.category_info!.type !== 'income'"
-              [class.dark:bg-red-500/10]="item.category_info!.type !== 'income'"
-            >
-              <div>
-                <div class="font-medium text-md text-gray-800 dark:text-white">
-                  {{ item.category_info!.name }} <span class="font-normal">({{ item.note }})</span>
-                </div>
-
-                <div class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ item.transaction_date | date:'dd/MM/yyyy' }}
-                </div>
-              </div>
-
               <div
-                class="font-semibold"
-                [class.text-green-600]="item.category_info!.type === 'income'"
-                [class.dark:text-green-400]="item.category_info!.type === 'income'"
-                [class.text-red-500]="item.category_info!.type !== 'income'"
-                [class.dark:text-red-400]="item.category_info!.type !== 'income'"
+                class="flex items-center justify-between rounded-xl px-4 py-3"
+                [class.bg-green-50]="item.category_info!.type === 'income'"
+                [class.dark:bg-green-500/10]="
+                  item.category_info!.type === 'income'
+                "
+                [class.bg-red-50]="item.category_info!.type !== 'income'"
+                [class.dark:bg-red-500/10]="
+                  item.category_info!.type !== 'income'
+                "
               >
-                {{ item.category_info!.type === 'income' ? '+' : '-' }}
-                ฿{{ item.amount | number:'1.2-2' }}
-              </div>
-            </div>
-            }
+                <div>
+                  <div
+                    class="font-medium text-md text-gray-800 dark:text-white"
+                  >
+                    {{ item.category_info!.name }}
+                    <span class="font-normal">({{ item.note }})</span>
+                  </div>
 
+                  <div class="text-sm text-gray-500 dark:text-gray-400">
+                    {{ item.transaction_date | date: "dd/MM/yyyy" }}
+                  </div>
+                </div>
+
+                <div
+                  class="font-semibold"
+                  [class.text-green-600]="item.category_info!.type === 'income'"
+                  [class.dark:text-green-400]="
+                    item.category_info!.type === 'income'
+                  "
+                  [class.text-red-500]="item.category_info!.type !== 'income'"
+                  [class.dark:text-red-400]="
+                    item.category_info!.type !== 'income'
+                  "
+                >
+                  {{ item.category_info!.type === "income" ? "+" : "-" }}
+                  ฿{{ item.amount | number: "1.2-2" }}
+                </div>
+              </div>
+            }
           </div>
         </div>
       }
 
-      @if (modalType === 'frog') {
-        <div class="relative min-h-[260px] overflow-hidden px-5">
+      @if (modalType === "frog") {
+        <div class="mt-4 flex items-center gap-6 justify-center">
+          <div class="text-8xl animate-bounce-soft">🐸</div>
 
-          <!-- Frog -->
-          <div class="absolute left-5 top-0 text-7xl animate-bounce-soft">
-            🐸
-          </div>
-
-          <!-- Chat Bubble -->
-          <div class="ml-24 mt-3 rounded-2xl bg-brand-500 p-5 text-white shadow-lg">
-            <div class="text-lg font-semibold">
-              กบผู้ช่วยการเงินของคุณ
-            </div>
+          <div
+            class="rounded-2xl bg-brand-500 p-5 text-white shadow-lg min-w-[400px]"
+          >
+            <div class="text-lg font-semibold">กบผู้ช่วยการเงินของคุณ</div>
 
             <div class="mt-2 text-sm text-white/90">
-              กำลังวิเคราะห์รายรับ รายจ่าย และช่วยวางแผนการเงินให้คุณ...
-            </div>
-
-            <!-- Spinner -->
-            <div class="mt-4 flex items-center gap-3">
-              <div
-                class="h-5 w-5 animate-spin rounded-full border-2 border-white/30 border-t-white"
-              ></div>
-
-              <span class="text-sm text-white/80">
-                กรุณารอสักครู่
-              </span>
-            </div>
-          </div>
-
-          <!-- Suggest Box -->
-          <div
-            class="mt-6 rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800"
-          >
-            <div class="text-sm text-gray-500 dark:text-gray-400">
-              ตัวอย่างคำแนะนำ
-            </div>
-
-            <div class="mt-2 font-medium text-gray-800 dark:text-white">
-              เดือนนี้คุณใช้ค่าอาหารสูงกว่าปกติ 18%
+              @if (agentPending) {
+                <p class="animate-pulse">กบขอคิดก่อนน้าาา</p>
+              }
+              @else{
+                {{
+                  agentText
+                  ? "กบตัวนี้ขอเเนะนำว่า ..."
+                  : "ต้องการให้กบช่วยวิเคราะห์การเงินของคุณไหมครับ เคโระ"
+                }}
+              }
             </div>
           </div>
         </div>
-      }
+        <div class="relative px-5 py-4">
+          @if (!agentText) {
+            <!-- intro -->
 
+            <!-- button -->
+            <div class="mt-10 border-t pt-6 flex justify-center">
+              @if (agentPending) {
+                <button
+                  class="w-[180px] rounded-xl bg-brand-400 py-3 text-4xl text-white"
+                >
+                  <span class="inline-block animate-spin">🐸</span>
+                </button>
+              } @else {
+                <button
+                  class="rounded-xl bg-brand-500 px-6 py-3 text-white font-medium hover:bg-brand-600 transition"
+                  (click)="suggestAi()"
+                >
+                  ใช่เลย ช่วยแนะนำฉันหน่อย 🐸
+                </button>
+              }
+            </div>
+          } @else {
+            <!-- result -->
+            <div
+              class="mt-4 max-h-[520px] overflow-y-auto rounded-2xl border border-gray-200 bg-gray-50 p-5 dark:border-gray-700 dark:bg-gray-800"
+              [innerHTML]="agentText"
+            ></div>
+
+            <div class="mt-5 flex justify-center">
+              <button
+                class="rounded-xl bg-brand-500 px-6 py-3 text-white font-medium hover:bg-brand-600 transition"
+                (click)="agentText = ''"
+              >
+                ถามใหม่อีกครั้ง
+              </button>
+            </div>
+          }
+        </div>
+      }
     </div>
   </app-modal>
 </div>
