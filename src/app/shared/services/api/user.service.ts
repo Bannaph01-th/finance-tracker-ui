@@ -25,6 +25,18 @@ export class UserService {
     }
   }
 
+  async createUser(payload: UserPayload): Promise<UserResponse | null> {
+    try{
+      const res: AxiosResponse<UserResponse> = 
+      await Axios().post("/sign-up",payload);
+
+      return res.data;
+    }catch(e:any){
+      console.log(e)
+      return e.res.data ?? null;
+    }
+  }
+
   // get user list
   async load(
     page: number = 1,
@@ -52,6 +64,8 @@ export class UserService {
       return error?.response?.data ?? null;
     }
   }
+
+
 
   async patchUserProfile(
     userId: string,

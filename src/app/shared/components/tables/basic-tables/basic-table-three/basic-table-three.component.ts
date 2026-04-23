@@ -3,7 +3,11 @@ import { Component, OnInit } from "@angular/core";
 import { ButtonComponent } from "../../../ui/button/button.component";
 import { TableDropdownComponent } from "../../../common/table-dropdown/table-dropdown.component";
 import { BadgeComponent } from "../../../ui/badge/badge.component";
-import { AllUser, User } from "../../../../services/interfaces/user.interface";
+import {
+  AllUser,
+  User,
+  UserPayload,
+} from "../../../../services/interfaces/user.interface";
 import { UserService } from "../../../../services/api/user.service";
 import { LabelComponent } from "../../../form/label/label.component";
 import { InputFieldComponent } from "../../../form/input/input-field.component";
@@ -22,21 +26,27 @@ import { RedirectCommand, ɵEmptyOutletComponent } from "@angular/router";
     FormsModule,
     InputFieldComponent,
     ModalComponent,
-    ɵEmptyOutletComponent
-],
+    ɵEmptyOutletComponent,
+  ],
   templateUrl: "./basic-table-three.component.html",
   styles: ``,
 })
 export class BasicTableThreeComponent implements OnInit {
   User: User[] = [];
 
+  modalType: "delete" | "add" = "add";
+
   isOpen = false;
 
   isloading = false;
-  onUserDelete = '';
+  onUserDelete = "";
 
   searchName = "";
   searchEmail = "";
+
+  fullname = "";
+  email = "";
+  password = "";
 
   currentPage = 1;
   itemsPerPage = 6;
@@ -76,7 +86,7 @@ export class BasicTableThreeComponent implements OnInit {
   }
 
   onserch() {
-    this.getuser(1)
+    this.getuser(1);
   }
 
   goToPage(page: number) {
@@ -84,36 +94,58 @@ export class BasicTableThreeComponent implements OnInit {
     this.getuser(page);
   }
 
-  async confirmDelete(){
-    if(this.onUserDelete === null) {
-      console.log("no have user")
-      this.onUserDelete = '';
-      return
+  async confirmDelete() {
+    if (this.onUserDelete === null) {
+      console.log("no have user");
+      this.onUserDelete = "";
+      return;
     }
 
-    try{
-      const res = await this.userService.deleteUser(this.onUserDelete)
-      
-      if(!res?.status){
-        console.log("cant delete user")
-        return
+    try {
+      const res = await this.userService.deleteUser(this.onUserDelete);
+
+      if (!res?.status) {
+        console.log("cant delete user");
+        return;
       }
 
-      this.onUserDelete = ''
-      this.isOpen = false
-      this.getuser()
-    }catch(e:any){
-      console.log(e)
+      this.onUserDelete = "";
+      this.isOpen = false;
+      this.getuser();
+    } catch (e: any) {
+      console.log(e);
     }
   }
 
-  onOpen(userId:string){
-    this.onUserDelete = userId
-    this.isOpen= true;
+  async addUser(): Promise<User | null> {
+    const payload: UserPayload = {
+      full_name: this.fullname,
+      password_hash: this.password,
+      email: this.email,
+    };
+    try {
+      const res = await this.userService.createUser(payload);
+      this.getuser();
+      this.fullname = '';
+      this.password = '';
+      this.email = '';
+
+
+      this.closeModal()
+      return res?.resultData ?? null;
+    } catch (e: any) {
+      console.log(e);
+      return null;
+    }
   }
 
-  closeModal(){
-    this.isOpen= false;
+  onOpen(type: "delete" | "add", userId?: string): void {
+    this.modalType = type;
+    this.onUserDelete = userId ?? "";
+    this.isOpen = true;
   }
 
+  closeModal() {
+    this.isOpen = false;
+  }
 }
