@@ -5,6 +5,9 @@ import { TableDropdownComponent } from "../../../common/table-dropdown/table-dro
 import { BadgeComponent } from "../../../ui/badge/badge.component";
 import { AllUser, User } from "../../../../services/interfaces/user.interface";
 import { UserService } from "../../../../services/api/user.service";
+import { LabelComponent } from "../../../form/label/label.component";
+import { InputFieldComponent } from "../../../form/input/input-field.component";
+import { FormsModule } from "@angular/forms";
 
 @Component({
   selector: "app-basic-table-three",
@@ -13,6 +16,9 @@ import { UserService } from "../../../../services/api/user.service";
     ButtonComponent,
     TableDropdownComponent,
     BadgeComponent,
+    LabelComponent,
+    FormsModule,
+    InputFieldComponent,
   ],
   templateUrl: "./basic-table-three.component.html",
   styles: ``,
@@ -21,6 +27,9 @@ export class BasicTableThreeComponent implements OnInit {
   User: User[] = [];
 
   isloading = false;
+
+  searchName = "";
+  searchEmail = "";
 
   currentPage = 1;
   itemsPerPage = 6;
@@ -39,14 +48,19 @@ export class BasicTableThreeComponent implements OnInit {
   async getuser(page: number = 1) {
     this.isloading = true;
     try {
-      const res = await this.userService.load(page, this.itemsPerPage);
+      const res = await this.userService.load(
+        page,
+        this.itemsPerPage,
+        this.searchName || undefined,
+        this.searchEmail || undefined,
+      );
       if (!res?.status) {
         console.log("error to load user");
         return;
       }
       this.User = res?.resultData?.users ?? [];
       this.totalPages = res?.resultData?.total_pages ?? 1;
-      this.currentPage = res?.resultData?.page??1
+      this.currentPage = res?.resultData?.page ?? 1;
     } catch (e) {
       console.log(e);
     } finally {
@@ -54,9 +68,12 @@ export class BasicTableThreeComponent implements OnInit {
     }
   }
 
+  onserch() {
+    this.getuser(1)
+  }
+
   goToPage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.getuser(page);
   }
-
 }
