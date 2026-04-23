@@ -56,7 +56,17 @@ export class HomePageComponent implements OnInit {
   userProfile: any = null;
   savingLimit = false;
 
-  modalType: "plan" | "finance-use" | "list" | "frog" = "plan";
+  modalType:
+    | 'plan'
+    | 'finance-use'
+    | 'list'
+    | 'frog'
+    | 'frog-log'
+    | 'frog-detail' = 'plan';
+
+  agentLogs: any[] = [];
+  selectedAgentLog: any = null;
+  loadingLogs = false;
 
   financeLimit = 0;
 
@@ -170,6 +180,23 @@ export class HomePageComponent implements OnInit {
     };
   }
 
+  async loadAgentLogs(): Promise<void> {
+    this.loadingLogs = true;
+
+    const res = await this.agentService.getLogs();
+
+    this.agentLogs =
+      res?.resultData?.logs ??
+      [];
+
+    this.loadingLogs = false;
+  }
+
+  viewAgentLog(item: any): void {
+    this.selectedAgentLog = item;
+    this.modalType = 'frog-detail';
+  }
+
   async saveFinanceLimit(): Promise<void> {
     if (!this.userProfile?.user_id) return;
 
@@ -190,12 +217,20 @@ export class HomePageComponent implements OnInit {
     }
   }
 
-  openModal(type: "plan" | "finance-use" | "list" | "frog"): void {
+  async openModal(
+    type:
+      | 'plan'
+      | 'finance-use'
+      | 'list'
+      | 'frog'
+      | 'frog-log'
+      | 'frog-detail'
+  ): Promise<void> {
     this.modalType = type;
     this.isOpen = true;
 
-    if (type === "finance-use") {
-      this.resetForm();
+    if (type === 'frog-log') {
+      await this.loadAgentLogs();
     }
   }
 

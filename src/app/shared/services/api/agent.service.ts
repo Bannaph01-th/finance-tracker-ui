@@ -37,4 +37,17 @@ export class AgentMessageService {
       return e?.res.data ?? null;
     }
   }
+
+  async getLogs(): Promise<any | null> {
+    try {
+      const res: AxiosResponse<any> = await Axios().get("/agent-logs");
+
+      const result = res.data;
+
+      return result ;
+
+    } catch (e: any) {
+      return e?.res.data ?? null;
+    }
+  }
 }
