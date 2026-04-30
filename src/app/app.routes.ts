@@ -1,12 +1,10 @@
 import { Routes } from "@angular/router";
-import { EcommerceComponent } from "./pages/dashboard/ecommerce/ecommerce.component";
 import { ProfileComponent } from "./pages/profile/profile.component";
 import { FormElementsComponent } from "./pages/forms/form-elements/form-elements.component";
 import { BasicTablesComponent } from "./pages/tables/basic-tables/basic-tables.component";
 import { BlankComponent } from "./pages/blank/blank.component";
 import { NotFoundComponent } from "./pages/other-page/not-found/not-found.component";
 import { AppLayoutComponent } from "./shared/layout/app-layout/app-layout.component";
-import { InvoicesComponent } from "./pages/invoices/invoices.component";
 import { LineChartComponent } from "./pages/charts/line-chart/line-chart.component";
 import { BarChartComponent } from "./pages/charts/bar-chart/bar-chart.component";
 import { AlertsComponent } from "./pages/ui-elements/alerts/alerts.component";
@@ -97,12 +95,6 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       // support tickets
-      {
-        path: "invoice",
-        component: InvoicesComponent,
-        title: "Angular Invoice Details Dashboard",
-        canActivate: [authGuard],
-      },
       {
         path: "line-chart",
         component: LineChartComponent,
