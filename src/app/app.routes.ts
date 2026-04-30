@@ -9,9 +9,7 @@ import { LineChartComponent } from "./pages/charts/line-chart/line-chart.compone
 import { BarChartComponent } from "./pages/charts/bar-chart/bar-chart.component";
 import { AlertsComponent } from "./pages/ui-elements/alerts/alerts.component";
 import { AvatarElementComponent } from "./pages/ui-elements/avatar-element/avatar-element.component";
-import { BadgesComponent } from "./pages/ui-elements/badges/badges.component";
 import { ButtonsComponent } from "./pages/ui-elements/buttons/buttons.component";
-import { ImagesComponent } from "./pages/ui-elements/images/images.component";
 import { SignInComponent } from "./pages/auth-pages/sign-in/sign-in.component";
 import { authGuard } from "./shared/services/guards/guards";
 import { SummaryTableComponent } from "./pages/summary-table/summary-table.component";
@@ -120,21 +118,9 @@ export const routes: Routes = [
         canActivate: [authGuard],
       },
       {
-        path: "badge",
-        component: BadgesComponent,
-        title: "Angular Badges Dashboard",
-        canActivate: [authGuard],
-      },
-      {
         path: "buttons",
         component: ButtonsComponent,
         title: "Angular Buttons Dashboard",
-        canActivate: [authGuard],
-      },
-      {
-        path: "images",
-        component: ImagesComponent,
-        title: "Angular Images Dashboard",
         canActivate: [authGuard],
       },
     ],
