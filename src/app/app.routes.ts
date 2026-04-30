@@ -14,12 +14,8 @@ import { AvatarElementComponent } from "./pages/ui-elements/avatar-element/avata
 import { BadgesComponent } from "./pages/ui-elements/badges/badges.component";
 import { ButtonsComponent } from "./pages/ui-elements/buttons/buttons.component";
 import { ImagesComponent } from "./pages/ui-elements/images/images.component";
-import { VideosComponent } from "./pages/ui-elements/videos/videos.component";
 import { SignInComponent } from "./pages/auth-pages/sign-in/sign-in.component";
-import { SignUpComponent } from "./pages/auth-pages/sign-up/sign-up.component";
-import { CalenderComponent } from "./pages/calender/calender.component";
 import { authGuard } from "./shared/services/guards/guards";
-import { Layout } from "@amcharts/amcharts5";
 import { SummaryTableComponent } from "./pages/summary-table/summary-table.component";
 import { FinanceCalenderComponent } from "./pages/finance-calender/finance-calender.component";
 import { UserManagementComponent } from "./pages/admin/user-management/user-management.component";
@@ -149,12 +145,6 @@ export const routes: Routes = [
         title: "Angular Images Dashboard",
         canActivate: [authGuard],
       },
-      {
-        path: "videos",
-        component: VideosComponent,
-        title: "Angular Videos Dashboard",
-        canActivate: [authGuard],
-      },
     ],
   },
 
@@ -166,15 +156,6 @@ export const routes: Routes = [
     title:
       "Finance Tracker Sign In Page",
   },
-  // {
-  //   path: "signup",
-  //   component: SignUpComponent,
-  //   canActivate: [authGuard],
-  //   title:
-  //     "Finance Tracker Sign Up Page",
-  // },
-
-  // error pages
   {
     path: "**",
     component: NotFoundComponent,
