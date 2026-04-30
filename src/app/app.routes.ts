@@ -8,7 +8,6 @@ import { AppLayoutComponent } from "./shared/layout/app-layout/app-layout.compon
 import { LineChartComponent } from "./pages/charts/line-chart/line-chart.component";
 import { BarChartComponent } from "./pages/charts/bar-chart/bar-chart.component";
 import { AlertsComponent } from "./pages/ui-elements/alerts/alerts.component";
-import { AvatarElementComponent } from "./pages/ui-elements/avatar-element/avatar-element.component";
 import { ButtonsComponent } from "./pages/ui-elements/buttons/buttons.component";
 import { SignInComponent } from "./pages/auth-pages/sign-in/sign-in.component";
 import { authGuard } from "./shared/services/guards/guards";
@@ -109,12 +108,6 @@ export const routes: Routes = [
         path: "alerts",
         component: AlertsComponent,
         title: "Angular Alerts Dashboard",
-        canActivate: [authGuard],
-      },
-      {
-        path: "avatars",
-        component: AvatarElementComponent,
-        title: "Angular Avatars Dashboard",
         canActivate: [authGuard],
       },
       {

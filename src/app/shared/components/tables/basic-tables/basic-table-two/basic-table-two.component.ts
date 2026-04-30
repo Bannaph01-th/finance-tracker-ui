@@ -1,14 +1,12 @@
 
 import { Component } from '@angular/core';
 import { BadgeComponent } from '../../../ui/badge/badge.component';
-import { AvatarTextComponent } from '../../../ui/avatar/avatar-text.component';
 import { CheckboxComponent } from '../../../form/input/checkbox.component';
 
 @Component({
   selector: 'app-basic-table-two',
   imports: [
     BadgeComponent,
-    AvatarTextComponent,
     CheckboxComponent
 ],
   templateUrl: './basic-table-two.component.html',
