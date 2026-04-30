@@ -1,14 +1,7 @@
 import { Routes } from "@angular/router";
 import { ProfileComponent } from "./pages/profile/profile.component";
-import { FormElementsComponent } from "./pages/forms/form-elements/form-elements.component";
-import { BasicTablesComponent } from "./pages/tables/basic-tables/basic-tables.component";
-import { BlankComponent } from "./pages/blank/blank.component";
 import { NotFoundComponent } from "./pages/other-page/not-found/not-found.component";
 import { AppLayoutComponent } from "./shared/layout/app-layout/app-layout.component";
-import { LineChartComponent } from "./pages/charts/line-chart/line-chart.component";
-import { BarChartComponent } from "./pages/charts/bar-chart/bar-chart.component";
-import { AlertsComponent } from "./pages/ui-elements/alerts/alerts.component";
-import { ButtonsComponent } from "./pages/ui-elements/buttons/buttons.component";
 import { SignInComponent } from "./pages/auth-pages/sign-in/sign-in.component";
 import { authGuard } from "./shared/services/guards/guards";
 import { SummaryTableComponent } from "./pages/summary-table/summary-table.component";
@@ -68,53 +61,6 @@ export const routes: Routes = [
             redirectTo: "/homePage"
           },
         ]
-      },
-
-      // template path
-      // ==================
-
-      {
-        path: "form-elements",
-        component: FormElementsComponent,
-        title: "Angular Form Elements Dashboard",
-        canActivate: [authGuard],
-      },
-      {
-        path: "basic-tables",
-        component: BasicTablesComponent,
-        title: "Angular Basic Tables Dashboard",
-        canActivate: [authGuard],
-      },
-      {
-        path: "blank",
-        component: BlankComponent,
-        title: "Angular Blank Dashboard",
-        canActivate: [authGuard],
-      },
-      // support tickets
-      {
-        path: "line-chart",
-        component: LineChartComponent,
-        title: "Angular Line Chart Dashboard",
-        canActivate: [authGuard],
-      },
-      {
-        path: "bar-chart",
-        component: BarChartComponent,
-        title: "Angular Bar Chart Dashboard",
-        canActivate: [authGuard],
-      },
-      {
-        path: "alerts",
-        component: AlertsComponent,
-        title: "Angular Alerts Dashboard",
-        canActivate: [authGuard],
-      },
-      {
-        path: "buttons",
-        component: ButtonsComponent,
-        title: "Angular Buttons Dashboard",
-        canActivate: [authGuard],
       },
     ],
   },
