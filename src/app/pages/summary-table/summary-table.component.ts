@@ -1,12 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-// import { ComponentCardComponent } from '../../shared/components/common/component-card/component-card.component';
 import { PageBreadcrumbComponent } from '../../shared/components/common/page-breadcrumb/page-breadcrumb.component';
 import { FinanceTableComponent } from '../../shared/components/tables/finance-table/finance-table.component';
-import { LabelComponent } from '../../shared/components/form/label/label.component';
-import { InputFieldComponent } from '../../shared/components/form/input/input-field.component';
-import { SelectComponent } from '../../shared/components/form/select/select.component';
-import { DatePickerComponent } from '../../shared/components/form/date-picker/date-picker.component';
-import { TimePickerComponent } from '../../shared/components/form/time-picker/time-picker.component';
 import { ModalComponent } from '../../shared/components/ui/modal/modal.component';
 import { FormsModule } from '@angular/forms';
 import { Category } from '../../shared/services/interfaces/category.interface';
@@ -18,17 +12,12 @@ import { DashboardService } from '../../shared/services/api/dashboard.service';
 
 @Component({
   selector: 'app-summary-table-page',
+  standalone: true,
   imports: [
-    // ComponentCardComponent,
     FormsModule,
     PageBreadcrumbComponent,
     FinanceTableComponent,
     ModalComponent,
-    // LabelComponent,
-    // InputFieldComponent,
-    // SelectComponent,
-    // DatePickerComponent,
-    // TimePickerComponent
   ],
   templateUrl: './summary-table.component.html',
   styles: ``
